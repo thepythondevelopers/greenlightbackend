@@ -1,0 +1,20 @@
+node_modules/
+dist/
+*.env/
+.env
+db_backups
+
+#websocket to send data
+{
+"sent_to":"627107305f0c2b2ac678aec0", 
+"local_identifier":"", 
+"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjcxMDczMDVmMGMyYjJhYzY3OGFlYzAiLCJzY29wZSI6InVzZXIiLCJ0b2tlbl9nZW5fYXQiOjE2NTIwOTYxNDY4MzYsImlhdCI6MTY1MjA5NjE0Nn0.YAFx8-N6u2q7EAA64tjhph4sUHzcjdiwHWoHdhD4ts0", 
+"sender_id":"624550032c9d184b56b968b1",
+"message":"Hii from john",
+"type":"NORMAL", "message_type":"TEXT", 
+"media_url":"",
+"sent_by":"624550032c9d184b56b968b1"
+}
+
+#shippo test token
+shippo_test_19f6cc0c9aa7298dcc9ac2fef8dc51225d740949

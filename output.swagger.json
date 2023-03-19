@@ -1,0 +1,1016 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "GreenLight Module With MongoDB Api Documentation",
+    "description": "GreenLight Module With MongoDB",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3004/",
+      "description": "local server"
+    },
+    {
+      "url": "https://greenlightapi.pamsar.com/",
+      "description": "Production Server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "User",
+      "description": "User related apis"
+    }
+  ],
+  "paths": {
+    "/api/sign-up": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "User Signup Api",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/user_signup"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/api/sign-in": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "User Login Api",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/user_login"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/user_login"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/api/forget-password": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "User Forgot Password Api",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/user_forgot_password"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/user_forgot_password"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/api/change-password": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "User Set New Password Api",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/user_set_new_password"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/user_set_new_password"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/api/account-delete": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "User account delete Api",
+        "requestBody": {},
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "security": [
+          {
+            "access_token": [
+              "token"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/account-deactivate": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "User account decativate Api",
+        "requestBody": {},
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "security": [
+          {
+            "access_token": [
+              "token"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/account-activate": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "User account Activate Api",
+        "requestBody": {},
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "security": [
+          {
+            "access_token": [
+              "token"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/logout": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "User Logout Api",
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "security": [
+          {
+            "access_token": [
+              "access_token"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/get-profile": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "User View My Profile Api",
+        "parameters": [],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "security": [
+          {
+            "access_token": [
+              "access_token"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/personal-information": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "User Personal Infromation Api",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/personal_information"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "security": [
+          {
+            "access_token": [
+              "access_token"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/personal-preferences": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "User Personal Prefrences Api",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/personal_prefrences"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "security": [
+          {
+            "access_token": [
+              "access_token"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/professional-information": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "User Professional Information Api",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/professional_information"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "security": [
+          {
+            "access_token": [
+              "access_token"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/location-information": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "User Location Information Api",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/location_information"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "security": [
+          {
+            "access_token": [
+              "access_token"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/image-position": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "User Image Position Api",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/image_position"
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "security": [
+          {
+            "access_token": [
+              "access_token"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/matching-algo": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "User Matching Algo  Api",
+        "parameters": [],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "security": [
+          {
+            "access_token": [
+              "access_token"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "user_signup": {
+        "type": "object",
+        "properties": {
+          "display_name": {
+            "description": "Pass here display_name ",
+            "type": "string",
+            "format": "string"
+          },
+          "dob": {
+            "description": "Enter your dob",
+            "type": "string",
+            "format": "string",
+            "default": "John Doe"
+          },
+          "email": {
+            "description": "Enter your email",
+            "type": "string",
+            "format": "email",
+            "default": "john_doe@gmail.com"
+          },
+          "gender": {
+            "description": "Enter your gender",
+            "type": "string"
+          },
+          "password": {
+            "description": "Enter your passowrd",
+            "type": "string",
+            "format": "password"
+          },
+          "interested_in": {
+            "description": "Enter interested_in",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "country": {
+            "description": "Enter country",
+            "type": "string"
+          },
+          "state": {
+            "description": "Enter state",
+            "type": "string"
+          },
+          "city": {
+            "description": "Enter city",
+            "type": "string"
+          },
+          "zipcode": {
+            "description": "Enter zipcode",
+            "type": "string"
+          },
+          "latLng": {
+            "description": "Enter latLng",
+            "type": "object"
+          }
+        }
+      },
+      "user_email_verification": {
+        "type": "object",
+        "properties": {
+          "otp": {
+            "description": "OTP comes here",
+            "type": "number",
+            "format": "number",
+            "default": "1234"
+          },
+          "language": {
+            "description": "valid languages are ENGLISH & ARABIC",
+            "type": "string",
+            "format": "string",
+            "enum": [
+              "ARABIC",
+              "ENGLISH"
+            ],
+            "default": "ENGLISH"
+          }
+        },
+        "required": [
+          "otp",
+          "language"
+        ]
+      },
+      "user_login": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "description": "Enter your email",
+            "type": "string",
+            "format": "email",
+            "default": "john_doe@gmail.com"
+          },
+          "password": {
+            "description": "Enter your passowrd",
+            "type": "string",
+            "format": "password"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
+      },
+      "user_forgot_password": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "description": "Enter your email",
+            "type": "string",
+            "format": "email",
+            "default": "john_doe@gmail.com"
+          }
+        },
+        "required": [
+          "email"
+        ]
+      },
+      "user_set_new_password": {
+        "type": "object",
+        "properties": {
+          "password_reset_token": {
+            "description": "Enter password_reset_token here",
+            "type": "string",
+            "format": "string"
+          },
+          "password": {
+            "description": "Enter your  new passowrd",
+            "type": "string",
+            "format": "password"
+          }
+        },
+        "required": [
+          "password_reset_token",
+          "password"
+        ]
+      },
+      "user_edit_profile": {
+        "type": "object",
+        "properties": {
+          "profile_pic": {
+            "description": "Here comes profile pic",
+            "type": "string",
+            "format": "string"
+          },
+          "full_name": {
+            "description": "Enter your full_name",
+            "type": "string",
+            "format": "string"
+          },
+          "username": {
+            "description": "Enter your full_name",
+            "type": "string",
+            "format": "string"
+          },
+          "cover_image": {
+            "description": "Enter your cover_image",
+            "type": "string",
+            "format": "string"
+          },
+          "email": {
+            "description": "Enter your email",
+            "type": "string",
+            "format": "email"
+          },
+          "country_code": {
+            "description": "Enter your country code",
+            "type": "string",
+            "format": "string"
+          },
+          "phone_no": {
+            "description": "Enter your phone number",
+            "type": "number",
+            "format": "number"
+          },
+          "birthday": {
+            "description": "Enter your birthday",
+            "type": "string",
+            "format": "string"
+          },
+          "account_type": {
+            "description": "Select your account type",
+            "type": "string",
+            "enum": [
+              "PRIVATE",
+              "PUBLIC"
+            ],
+            "default": "PUBLIC"
+          },
+          "gender": {
+            "description": "Enter your gender",
+            "type": "string",
+            "enum": [
+              "MALE",
+              "FEMALE",
+              "OTHER"
+            ],
+            "default": "MALE"
+          },
+          "hobbies": {
+            "description": "Enter your hobbies",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "language": {
+            "description": "valid languages are ENGLISH & ARABIC",
+            "type": "string",
+            "format": "string",
+            "enum": [
+              "ARABIC",
+              "ENGLISH"
+            ],
+            "default": "ENGLISH"
+          }
+        },
+        "required": [
+          "language"
+        ]
+      },
+      "personal_information": {
+        "type": "object",
+        "properties": {
+          "first_name": {
+            "description": "Pass here first_name ",
+            "type": "string",
+            "format": "string"
+          },
+          "last_name": {
+            "description": "Enter your last_name",
+            "type": "string",
+            "format": "string"
+          },
+          "dob": {
+            "description": "Enter your dob",
+            "type": "string"
+          },
+          "gender": {
+            "description": "Enter your gender",
+            "type": "string"
+          },
+          "height": {
+            "description": "Enter your height",
+            "type": "string"
+          },
+          "interested_in": {
+            "description": "Enter interested_in",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "eyes": {
+            "description": "Enter eyes",
+            "type": "string"
+          },
+          "hair_color": {
+            "description": "Enter hair_color",
+            "type": "string"
+          },
+          "eyes_other": {
+            "description": "Enter eyes",
+            "type": "string"
+          },
+          "hair_color_other": {
+            "description": "Enter hair_color",
+            "type": "string"
+          },
+          "interests": {
+            "description": "Enter interests",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "personal_prefrences": {
+        "type": "object",
+        "properties": {
+          "alcohol": {
+            "description": "Pass here alcohol ",
+            "type": "string",
+            "format": "string"
+          },
+          "smoking": {
+            "description": "Enter your smoking",
+            "type": "string",
+            "format": "string"
+          },
+          "marijuana": {
+            "description": "Enter your marijuana",
+            "type": "string"
+          },
+          "drugs": {
+            "description": "Enter your drugs",
+            "type": "string"
+          },
+          "have_kids": {
+            "description": "Enter your have_kids",
+            "type": "string"
+          },
+          "want_kids": {
+            "description": "Enter want_kids here",
+            "type": "string"
+          },
+          "astrology_sign": {
+            "description": "Enter astrology_sign",
+            "type": "string"
+          },
+          "ethinicity": {
+            "description": "Enter ethinicity",
+            "type": "string"
+          },
+          "looking_for": {
+            "description": "Enter looking_for",
+            "type": "string"
+          },
+          "religion": {
+            "description": "Enter religion",
+            "type": "string"
+          },
+          "politics": {
+            "description": "Enter politics",
+            "type": "string"
+          }
+        }
+      },
+      "professional_information": {
+        "type": "object",
+        "properties": {
+          "have_car": {
+            "description": "Pass here have_car ",
+            "type": "string",
+            "format": "string"
+          },
+          "work": {
+            "description": "Enter your work",
+            "type": "object",
+            "items": {
+              "type": "string"
+            }
+          },
+          "education_degree": {
+            "description": "Enter your education_degree",
+            "type": "string"
+          },
+          "education_school": {
+            "description": "Enter your education_school",
+            "type": "string"
+          },
+          "aout_me": {
+            "description": "Enter your aout_me",
+            "type": "string"
+          }
+        }
+      },
+      "location_information": {
+        "type": "object",
+        "properties": {
+          "mobile": {
+            "description": "Pass here mobile ",
+            "type": "string",
+            "format": "string"
+          },
+          "location": {
+            "description": "Enter your location",
+            "type": "string"
+          },
+          "country": {
+            "description": "Enter country",
+            "type": "string"
+          },
+          "state": {
+            "description": "Enter state",
+            "type": "string"
+          },
+          "city": {
+            "description": "Enter city",
+            "type": "string"
+          },
+          "zipcode": {
+            "description": "Enter zipcode",
+            "type": "string"
+          },
+          "latLng": {
+            "description": "Enter latLng",
+            "type": "object"
+          }
+        }
+      },
+      "images": {
+        "type": "object",
+        "properties": {
+          "images": {
+            "description": "Enter Images Here",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "save_light": {
+        "type": "object",
+        "properties": {
+          "sent": {
+            "description": "Pass here mobile ",
+            "type": "string",
+            "format": "string"
+          },
+          "light": {
+            "description": "Enter your location",
+            "type": "string"
+          },
+          "save_light": {
+            "type": "object",
+            "properties": {
+              "sent": {
+                "description": "Pass here mobile ",
+                "type": "string",
+                "format": "string"
+              },
+              "light": {
+                "description": "Enter your location",
+                "type": "string",
+                "enum": [
+                  "Green",
+                  "Yellow",
+                  "Red"
+                ],
+                "default": "null"
+              }
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "access_token": {
+        "name": "access_token",
+        "in": "header",
+        "description": "access_token to be passed as a header",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "style": "simple"
+      },
+      "find_by_id": {
+        "name": "_id",
+        "in": "query",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "style": "form",
+        "explode": true
+      },
+      "find_by_id_optional": {
+        "name": "_id",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "string"
+        },
+        "style": "form",
+        "explode": true
+      },
+      "delete_by_id": {
+        "name": "_id",
+        "in": "path",
+        "description": "Pass here _id",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "post_type": {
+        "description": "0:POST , 1:REEL",
+        "name": "post_type",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "integer"
+        },
+        "style": "form",
+        "explode": true
+      },
+      "media_type": {
+        "description": "0:IMAGE ,1:VIDEO",
+        "name": "media_type",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "integer"
+        },
+        "style": "form",
+        "explode": true
+      },
+      "transaction_type": {
+        "description": "0:Buy coins ,1:Send coins, 2:Withdraw coins 3:Recieve coins",
+        "name": "transaction_type",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "integer"
+        },
+        "style": "form",
+        "explode": true
+      },
+      "language": {
+        "name": "language",
+        "in": "query",
+        "description": "valid languages are ENGLISH & ARABIC",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "format": "string",
+          "enum": [
+            "ARABIC",
+            "ENGLISH"
+          ],
+          "default": "ENGLISH"
+        }
+      },
+      "search": {
+        "name": "search",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "string"
+        },
+        "style": "form",
+        "explode": true
+      },
+      "pagination": {
+        "name": "pagination",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "number"
+        },
+        "style": "form",
+        "explode": true
+      },
+      "start_date": {
+        "name": "start_date",
+        "in": "query",
+        "required": false,
+        "description": "must be in format DD/MM/YYYY",
+        "schema": {
+          "type": "string"
+        },
+        "style": "form",
+        "explode": true
+      },
+      "end_date": {
+        "name": "end_date",
+        "in": "query",
+        "required": false,
+        "description": "must be in format DD/MM/YYYY",
+        "schema": {
+          "type": "string"
+        },
+        "style": "form",
+        "explode": true
+      },
+      "limit": {
+        "name": "limit",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "number",
+          "format": "number"
+        },
+        "style": "form",
+        "explode": true
+      },
+      "timezone": {
+        "name": "timezone",
+        "in": "query",
+        "required": false,
+        "description": "pass here timezone like Asia/Kolkata",
+        "schema": {
+          "type": "string"
+        },
+        "style": "form",
+        "explode": true
+      },
+      "list_content": {
+        "name": "type",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "format": "string",
+          "enum": [
+            "ABOUT_US",
+            "PRIVACY_POLICY",
+            "TERMS_AND_CONDITIONS"
+          ]
+        },
+        "style": "form",
+        "explode": true
+      }
+    },
+    "securitySchemes": {
+      "access_token": {
+        "type": "apiKey",
+        "name": "token",
+        "in": "header"
+      }
+    }
+  }
+}

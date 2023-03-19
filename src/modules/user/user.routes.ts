@@ -1,0 +1,35 @@
+import express from 'express';
+import  userController from './user.controller';
+import authenticator from "../../middlewares/authenticator"
+const router = express.Router();
+var multer = require('multer');
+const storage = multer.memoryStorage()
+const upload = multer({ storage: storage })
+
+router.post("/sign-up",userController.signUp)
+router.post("/sign-in",userController.signIn)
+
+router.post("/forget-password",userController.forgetPassword)
+router.post("/change-password",userController.setNewPassword)
+
+router.post("/account-delete",authenticator, userController.accountDelete)
+router.post("/account-deactivate",authenticator,userController.accountDeactivate)
+router.post("/account-activate",authenticator,userController.accountActivate)
+router.post("/logout",authenticator,userController.logout)
+
+//PROFILE APIS
+router.get("/get-profile",authenticator,userController.getProfile)
+router.post("/personal-information",authenticator,userController.personalInformation)
+router.post("/personal-preferences",authenticator,userController.personalPrefrences)
+router.post("/professional-information",authenticator,userController.professinalInformation)
+router.post("/location-information",authenticator,userController.locationInformation)
+router.post("/profile-image",upload.fields([{name:'image',maxCount:1}]),authenticator,userController.profileImage)
+router.post("/profile-image-delete/:key",authenticator,userController.profileImageDelete);
+router.post("/image-position",authenticator,userController.imagePosition);
+router.get("/matching-algo",authenticator,userController.matchingAlgorithm)
+
+//Light APIS
+router.post("/save-light",authenticator,userController.saveLight)
+
+
+export default router;
