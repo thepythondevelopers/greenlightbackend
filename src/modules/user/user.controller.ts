@@ -117,7 +117,7 @@ class userController {
                 let password_reset_token = await helpers.genUniqueCode(Models.Users)
                 let update = { password_reset_token: password_reset_token, password_reset_time: Date.now() }
                 let options = { new: true }
-                let update_data = await DAO.findAndUpdate(Models.Users, , update, options)
+                let update_data = await DAO.findAndUpdate(Models.Users,query , update, options)
 
                 await email_services.forgotPasswordMail(update_data)
                 let url = 'http://54.158.4.117/create-password/' + password_reset_token
@@ -454,7 +454,9 @@ query
             let { _id: user_id } = req.user_data
             let fetchUser: any = await userServices.verifyUserInfo({ _id: user_id })
 
-            let { latLng, country, dob, interested_in } = fetchUser[0]
+            let { latLng, country, dob, interested_in,gender } = fetchUser[0]
+            console.log('gender',gender)
+
 
             let longitude = latLng.coordinates[0]
             let latitude = latLng.coordinates[1]
@@ -476,6 +478,10 @@ query
             let query_red ={user:user_id,light:"Red"}
             let getRedLight:any = await DAO.getData(Models.Light,query_red,{__v:0},{lean:true})
             console.log("REDLIGHT",getRedLight)
+
+            // let query_green ={user:user_id,light:"Green"}
+            // let getGreenLight:any = await DAO.getData(Models.Light,query_green,{__v:0},{lean:true})
+            // console.log("REDLIGHT",getRedLight)
              
             for(let i of getRedLight){
                 light_id_Arr.push(i.sent)
@@ -494,16 +500,22 @@ query
 
 
             let query = {
-                _id: { 
-                    $ne: user_id,
-                    $in:light_id_Arr
-                 },
-                interested_in: { $in: interested_in },
+                // _id: { 
+                //     $ne: user_id,
+                //     // $in:light_id_Arr
+                //  },
+                $or:[
+                
+                    { _id:{$ne:user_id}},
+                    { _id:{$in:light_id_Arr}}
+                   ],
+                interested_in: { $eq: gender },
                 $and:[
                      { dob:{$gte:greaterAge}},
                      { dob:{$lte:checkAge}},
                      { dob:{$lte:lesserAge}}, 
                 ],
+                gender:{$in:interested_in},
                 latLng:
                 {
                     $near:
@@ -512,9 +524,10 @@ query
                             type: "Point",
                             coordinates: [ longitude, latitude ]
                         },
-                        // $maxDistance: 10 * 1000
+                        $maxDistance: 25 * 1000
                     }
                 },
+                
                 // country:country
                 
             }
@@ -595,6 +608,8 @@ query
                     {'eyes': eyes},
                    {'hair_color': hair_color},
                    {'religion': religion},
+                //    { _id:{$ne:user_id}},
+                //    { _id:{$in:light_id_Arr}}
                   ]
                 // country:country
                 
@@ -619,7 +634,26 @@ query
             let fetch_data:any = await DAO.getData(Models.Light,query,projection,options)
 
             if(fetch_data.length){
-                return res.json({'message' : 'Already Light Send.'})
+                // return res.json({'message' : 'Already Light Send.'})
+                let {_id} = fetch_data[0]
+                let lights =fetch_data[0].light
+                if(lights=="Green"){
+                    return res.json({'message' : 'Already Light Send.'})
+                }else{
+                    if(light!==undefined||light!==null){
+                        let query ={_id:_id}
+                    let update ={light:light}
+                    let options = {new:true}
+                    let response = await DAO.findAndUpdate(Models.Light,query,update,options)
+    
+                    return res.json({'message' : 'Light Update Successfully.'})
+    
+                    }else{
+                        return res.json({'message' : 'Already Light Send.'})
+                    }
+                    
+                }
+               
             }else{
                 let data ={
                     user:user_id,
@@ -649,8 +683,94 @@ query
         }
     }
 
+    static async yellowLight(req:any,res:express.Response){
+        try{
+            let {_id:user_id} = req.user_data
+            let query ={user:user_id,light:"Yellow"}
+            let projection ={__v:0}
+            let options ={lean:true}
+            let polulate_data =[
+                {path:'sent' , select:""}
+            ]
+            let response = await DAO.populateData(Models.Light,query,projection,options,polulate_data)
+            res.send(response)
+        }catch(err){
+            handleCatch(res,err)
+        }
+    }
 
+    static async greenLight(req:any,res:express.Response){
+        try{
+            let {_id:user_id} = req.user_data
+            let query ={
+                // $and:[
+                    user:user_id,light:"Green"
+                    // {,light:{$ne:"Green"}}
+                // ]
+            }
+            let projection ={__v:0}
+            let options ={lean:true}
 
+            let fetchData:any = await DAO.getData(Models.Light,query,projection,options)
+
+            let sent_ids_arr:any =[]
+            for(let i of fetchData){
+                sent_ids_arr.push(i.sent)
+            }
+
+            let query_one={
+                user:{$in:sent_ids_arr},light:"Green"
+            }
+
+            let fetchDataOne:any = await DAO.getData(Models.Light,query_one,projection,options)
+
+            let other_ids_arr:any=[]
+            for(let i of fetchDataOne){
+                other_ids_arr.push(i.user)
+            }
+
+            let query_resp = {
+                user:user_id,sent:{$nin:other_ids_arr},light:"Green"
+            }
+            let populate_data =[
+                {path:"sent", select:""}
+            ]
+            let response = await DAO.populateData(Models.Light,query_resp,projection,options,populate_data)
+            res.send(response)
+        }catch(err){
+            handleCatch(res,err)
+        }
+
+    }
+
+    static async mutualGreenLight(req:any,res:express.Response){
+        try{
+            let {_id:user_id} = req.user_data
+           let query ={
+            user:user_id,
+            light:"Green"
+           }
+            let projection ={__v:0}
+            let options ={lean:true}
+            let fetchData:any = await DAO.getData(Models.Light,query,projection,options)
+           let sent_ids_arr:any =[]
+            for(let i of fetchData){
+                sent_ids_arr.push(i.sent)
+            }
+
+            let query_resp={
+                    user:{$in:sent_ids_arr},sent:user_id,light:"Green"
+                
+            }
+            let populate_data=[
+                {path:"user",select:''}
+            ]
+            let response = await DAO.populateData(Models.Light,query_resp,projection,options,populate_data)
+            res.send(response)
+        }catch(err){
+            handleCatch(res,err)
+        }
+    }
 
 }
 

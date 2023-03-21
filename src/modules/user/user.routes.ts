@@ -26,10 +26,13 @@ router.post("/location-information",authenticator,userController.locationInforma
 router.post("/profile-image",upload.fields([{name:'image',maxCount:1}]),authenticator,userController.profileImage)
 router.post("/profile-image-delete/:key",authenticator,userController.profileImageDelete);
 router.post("/image-position",authenticator,userController.imagePosition);
-router.get("/matching-algo",authenticator,userController.matchingAlgorithm)
+router.post("/matching-algo",authenticator,userController.matchingAlgorithm)
 
 //Light APIS
 router.post("/save-light",authenticator,userController.saveLight)
+router.get("/yellow-light",authenticator,userController.yellowLight)
+router.get("/sent-green-light",authenticator,userController.greenLight);
+router.get("/mutual-green-light",authenticator,userController.mutualGreenLight);
 
 
 export default router;

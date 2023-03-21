@@ -384,12 +384,107 @@
                 ]
             }
         },
+        "/api/save-light": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "User Image Position Api",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/save_light"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "description": "successful operation"
+                    }
+                },
+                "security": [
+                    {
+                        "access_token": [
+                            "access_token"
+                        ]
+                    }
+                ]
+            }
+        },
         "/api/matching-algo": {
-            "get": {
+            "post": {
                 "tags": [
                     "User"
                 ],
                 "summary": "User Matching Algo  Api",
+                "responses": {
+                    "default": {
+                        "description": "successful operation"
+                    }
+                },
+                "security": [
+                    {
+                        "access_token": [
+                            "access_token"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/api/yellow-light": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "User /yellow-light Api",
+                "parameters": [
+        
+                ],
+                "responses": {
+                    "default": {
+                        "description": "successful operation"
+                    }
+                },
+                "security": [
+                    {
+                        "access_token": [
+                            "access_token"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/api/sent-green-light": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "User sent-green-light Api",
+                "parameters": [
+        
+                ],
+                "responses": {
+                    "default": {
+                        "description": "successful operation"
+                    }
+                },
+                "security": [
+                    {
+                        "access_token": [
+                            "access_token"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/api/mutual-green-light": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "User mutual-green-light Api",
                 "parameters": [
         
                 ],
@@ -828,27 +923,8 @@
                     "light": {
                         "description": "Enter your location",
                         "type": "string"
-                    },
-                    "save_light": {
-                        "type": "object",
-                        "properties": {
-                            "sent": {
-                                "description": "Pass here mobile ",
-                                "type": "string",
-                                "format": "string"
-                            },
-                            "light": {
-                                "description": "Enter your location",
-                                "type": "string",
-                                "enum": [
-                                    "Green",
-                                    "Yellow",
-                                    "Red"
-                                ],
-                                "default": "null"
-                            }
                     }
-                     }
+                     
                 }
             }
         },
