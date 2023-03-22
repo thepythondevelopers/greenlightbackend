@@ -27,6 +27,7 @@ router.post("/profile-image",upload.fields([{name:'image',maxCount:1}]),authenti
 router.post("/profile-image-delete/:key",authenticator,userController.profileImageDelete);
 router.post("/image-position",authenticator,userController.imagePosition);
 router.post("/matching-algo",authenticator,userController.matchingAlgorithm)
+router.post("/search-matching-algo",authenticator,userController.searchMatchingAlgorithm)
 
 //Light APIS
 router.post("/save-light",authenticator,userController.saveLight)

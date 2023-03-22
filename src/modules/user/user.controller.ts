@@ -479,9 +479,6 @@ query
             let getRedLight:any = await DAO.getData(Models.Light,query_red,{__v:0},{lean:true})
             console.log("REDLIGHT",getRedLight)
 
-            // let query_green ={user:user_id,light:"Green"}
-            // let getGreenLight:any = await DAO.getData(Models.Light,query_green,{__v:0},{lean:true})
-            // console.log("REDLIGHT",getRedLight)
              
             for(let i of getRedLight){
                 light_id_Arr.push(i.sent)
@@ -493,29 +490,25 @@ query
 
             for(let i of getYellowLight){
                 light_id_Arr.push(i.sent)
-            }
+                }
 
             console.log("LIGHT_IDS",light_id_Arr)
             console.log("INT",interested_in)
 
 
             let query = {
-                // _id: { 
-                //     $ne: user_id,
-                //     // $in:light_id_Arr
-                //  },
-                $or:[
                 
-                    { _id:{$ne:user_id}},
-                    { _id:{$in:light_id_Arr}}
-                   ],
                 interested_in: { $eq: gender },
+                gender:{$in:interested_in},
+
                 $and:[
+                    { _id:{$ne:user_id}},
+                    { _id:{$in:light_id_Arr}},
                      { dob:{$gte:greaterAge}},
                      { dob:{$lte:checkAge}},
                      { dob:{$lte:lesserAge}}, 
                 ],
-                gender:{$in:interested_in},
+                
                 latLng:
                 {
                     $near:
@@ -524,7 +517,7 @@ query
                             type: "Point",
                             coordinates: [ longitude, latitude ]
                         },
-                        $maxDistance: 25 * 1000
+                        // $maxDistance: 25 * 1000
                     }
                 },
                 
@@ -546,7 +539,7 @@ query
 
             let fetchUser: any = await userServices.verifyUserInfo({ _id: user_id })
 
-            let { latLng, country, dob } = fetchUser[0]
+            let { latLng, country,gender } = fetchUser[0]
 
             let longitude = latLng.coordinates[0]
             let latitude = latLng.coordinates[1]
@@ -583,16 +576,18 @@ query
 
 
             let query = {
-                _id: { 
-                    $ne: user_id,
-                    $in:light_id_Arr
-                 },
-                interested_in: { $in: interested_in },
+                
+                interested_in: { $eq: gender },
+                gender:{$in:interested_in},
+
                 $and:[
-                    { dob:{$gte:greaterAge}},
-                    { dob:{$lte:checkAge}},
-                    { dob:{$lte:lesserAge}}, 
-               ],
+                    { _id:{$ne:user_id}},
+                    { _id:{$in:light_id_Arr}},
+                     { dob:{$gte:greaterAge}},
+                     { dob:{$lte:checkAge}},
+                     { dob:{$lte:lesserAge}}, 
+                ],
+                
                 latLng:
                 {
                     $near:
@@ -601,16 +596,15 @@ query
                             type: "Point",
                             coordinates: [ longitude, latitude ]
                         },
-                        // $maxDistance: 10 * 1000
+                        // $maxDistance: 25 * 1000
                     }
                 },
                 $or:[
                     {'eyes': eyes},
                    {'hair_color': hair_color},
                    {'religion': religion},
-                //    { _id:{$ne:user_id}},
-                //    { _id:{$in:light_id_Arr}}
                   ]
+                
                 // country:country
                 
             }

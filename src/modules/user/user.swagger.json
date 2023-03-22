@@ -433,6 +433,35 @@
                 ]
             }
         },
+        "/api/search-matching-algo": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "User Search Matching Algo  Api",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/search_matching_algo"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "default": {
+                        "description": "successful operation"
+                    }
+                },
+                "security": [
+                    {
+                        "access_token": [
+                            "access_token"
+                        ]
+                    }
+                ]
+            }
+        },
         "/api/yellow-light": {
             "get": {
                 "tags": [
@@ -924,6 +953,52 @@
                         "description": "Enter your location",
                         "type": "string"
                     }
+                     
+                }
+            },
+            "search_matching_algo": {
+                "type": "object",
+                "properties": {
+                    "interested_in": {
+                        "description": "Pass here interested_in ",
+                        "type": "array",
+                        "items":{
+                            "type":"string"
+                        }
+                    },
+                    "age_from": {
+                        "description": "Enter your age_from",
+                        "type": "string"
+                    },
+                    "age_to": {
+                        "description": "Enter your age_to",
+                        "type": "string"
+                    },
+                    "height_from": {
+                        "description": "Enter your height_from",
+                        "type": "string"
+                    },
+                    "height_to": {
+                        "description": "Enter your height_to",
+                        "type": "string"
+                    },
+                    "eyes": {
+                        "description": "Enter your eyes",
+                        "type": "string"
+                    },
+                    "hair_color": {
+                        "description": "Enter your hair_color",
+                        "type": "string"
+                    },
+                    "religion": {
+                        "description": "Enter your religion",
+                        "type": "string"
+                    },
+                    "marital_status": {
+                        "description": "Enter your marital_status",
+                        "type": "string"
+                    }
+                    
                      
                 }
             }
