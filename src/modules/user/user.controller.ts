@@ -24,12 +24,11 @@ class userController {
             let fetch_data: any = await userServices.verifyUserInfo(query_displayName)
 
             if (user_detail.length) {
-                throw await ("EMAIL_ALREADY_EXISTS");
+                return res.status(401).json({ message: 'Email already exists' });
             } else if (fetch_data.length) {
-                throw await ('Display Name already in use')
+                return res.status(403).json({ message: 'Display Name  already exists' });
             }
             else {
-
                 // create new user
                 let create_user = await userServices.setUserData(req.body);
                 let { _id } = create_user;
@@ -71,17 +70,17 @@ class userController {
 
                 let decrypt = await helpers.decryptPassword(password, hash);
                 if (decrypt != true) {
-                    throw await ("INCORRECT_PASSWORD");
+                    return res.status(400).json({ message: 'Credential Mismatched' }); 
                 }
                 if (status == 0) {
-                    throw await ("ACCOUNT_DELETED");
+                    // throw await ("ACCOUNT_DELETED");
                 }
                 if (status == 2) {
-                    throw await ("ACCOUNT_DEACTIVATED");
+                    // throw await ("ACCOUNT_DEACTIVATED");
                 } else {
                     // generate access token
                     let generateToken: any = await userServices.Generate_User_Token(_id, req.body);
-
+                    
                     // fetch user response
                     let response = await userServices.make_user_response(generateToken);
 
@@ -89,13 +88,14 @@ class userController {
                     res.json({ token: response.token, user: { user_email: email } });
                 }
             } else {
-                throw await ("EMAIL_NOT_REGISTERED");
+                return res.status(400).json({ message: 'Credential Mismatched' });
+
             }
         } catch (err) {
-            res.status(500).send({
-                message:
-                    err.message || "Some error occurred."
-            });
+            return res.status(400).json({
+                message: "Unable to login",
+                error: err
+            })
         }
     };
 
@@ -224,7 +224,7 @@ query
             let { _id } = req.session_data;
 
             let query = { _id: _id };
-            await DAO.removeData(Models.Sessions, query);
+            await DAO.removeMany(Models.Sessions, query);
 
             let message = "Logout Sucessfull";
             let response = { message: message };
@@ -259,7 +259,7 @@ query
     static async personalInformation(req: any, res: express.Response) {
         try {
             let { _id: user_id } = req.user_data
-            let { first_name, last_name,eyes_other,hair_color_other, dob, gender, interested_in, height, eyes, hair_color, interests } = req.body
+            let { first_name, last_name,eyes_other,looking_other,hair_color_other,ethinicity_other,politics_other, dob, gender, interested_in, height, eyes, hair_color, interests } = req.body
             let query = { _id: user_id }
             let user_data = {
                 first_name: first_name,
@@ -271,7 +271,11 @@ query
                 eyes: eyes,
                 eyes_other:eyes_other,
                 hair_color: hair_color,
-                interests: interests
+                interests: interests,
+                hair_color_other:hair_color_other,
+                ethinicity_other:ethinicity_other,
+                politics_other:politics_other,
+                looking_other:looking_other
             }
             let options = { new: true }
             let response = await DAO.findAndUpdate(Models.Users, query, user_data, options)
@@ -363,27 +367,31 @@ query
     static async profileImage(req: any, res: express.Response) {
         try {
             let random = await userServices.random_code(8);
+            console.log("fsofsdkflsd")
             const s3 = new AWS.S3({
                 accessKeyId: process.env.AWS_ID,
                 secretAccessKey: process.env.AWS_SECRET
             });
-
+                console.log("ajfnanfkfs")
+                console.log("FILES",req.files.image[0].originalname)
             const params = {
                 Bucket: process.env.AWS_BUCKET_NAME,
                 Key: random + req.files.image[0].originalname, // File name you want to save as in S3
                 Body: req.files.image[0].buffer,
                 ContentType: req.files.image[0].mimetype
             }
-
+            console.log("PArams",params)
             //Uploading files to the bucket
 
             const stored: any = await s3.upload(params).promise()
+            console.log("Stored---",stored)
             await Models.Users.updateOne(
                 { _id: req.user._id },
                 { $push: { images: stored.key } }
             )
 
             return res.json({ message: 'File uploaded successfully.' });
+
 
         } catch (err) {
             return res.status(400).json({ message: 'Error Occur While uploading.', error: err });

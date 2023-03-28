@@ -118,6 +118,7 @@ const setUserData = async (data: any) => {
     };
 
     let response: any = await DAO.saveData(Models.Users, data_to_save);
+
     return response;
   } catch (err) {
     throw err;
@@ -165,59 +166,6 @@ const random_code=async(length:number)=> {
   return result;
 }
 
-const lookupLightData = async (_id:string) => {
-  try {
-      return {
-          $lookup: {
-              from: "light",
-              let: { user_id:'$_id'  },
-              pipeline: [
-                  {
-                      $match: {
-                          $expr: {
-                            $and: [
-                              { $ne: ["$sent", mongoose.Types.ObjectId(_id)], },
-                              { $eq: ["$light", "Red"] }
-                          ]
-                          },
-                      },
-
-                  },
-              ],
-
-              as: "light"
-          },
-      };
-  } catch (err) {
-      throw err;
-  }
-};
-
-const matchUserData = async (user_id: string) => {
-  try {
-
-      return {
-          $match: {
-              user_id: new mongoose.Types.ObjectId(user_id)
-          }
-      }
-
-  }
-  catch (err) {
-      throw err;
-  }
-}
-
-const fetchLightUserSearch = async (query: any, options: any) => {
-  try {
-      let response: any = await DAO.aggregateData(Models.Light, query, options);
-      return response;
-  } catch (err) {
-      throw err;
-  }
-};
-
-
 
 export {
   Generate_User_Token,
@@ -226,9 +174,6 @@ export {
   verifyUserInfo,
   setUserData,
   createNewUser,
-  random_code,
-  lookupLightData,
-  fetchLightUserSearch,
-  matchUserData
+  random_code
  
 };

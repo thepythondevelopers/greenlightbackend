@@ -6,14 +6,14 @@
         "version": "1.0.0"
     },
     "servers": [
-          {
+        {
             "url": "http://localhost:3004/",
             "description": "local server"
-          },
-          {
+        },
+        {
             "url": " https://greenlightapi.pamsar.com/",
-            "description":"Production Server"
-          }
+            "description": "Production Server"
+        }
     ],
     "tags": [
         {
@@ -22,7 +22,6 @@
         }
     ],
     "paths": {
-       
         "/api/sign-up": {
             "post": {
                 "tags": [
@@ -97,7 +96,6 @@
                         "description": "successful operation"
                     }
                 }
-              
             }
         },
         "/api/change-password": {
@@ -133,9 +131,7 @@
                     "User"
                 ],
                 "summary": "User account delete Api",
-                "requestBody": {
-                    
-                },
+                "requestBody": {},
                 "responses": {
                     "default": {
                         "description": "successful operation"
@@ -156,9 +152,7 @@
                     "User"
                 ],
                 "summary": "User account decativate Api",
-                "requestBody": {
-                    
-                },
+                "requestBody": {},
                 "responses": {
                     "default": {
                         "description": "successful operation"
@@ -179,9 +173,7 @@
                     "User"
                 ],
                 "summary": "User account Activate Api",
-                "requestBody": {
-                    
-                },
+                "requestBody": {},
                 "responses": {
                     "default": {
                         "description": "successful operation"
@@ -222,9 +214,7 @@
                     "User"
                 ],
                 "summary": "User View My Profile Api",
-                "parameters": [
-        
-                ],
+                "parameters": [],
                 "responses": {
                     "default": {
                         "description": "successful operation"
@@ -468,9 +458,7 @@
                     "User"
                 ],
                 "summary": "User /yellow-light Api",
-                "parameters": [
-        
-                ],
+                "parameters": [],
                 "responses": {
                     "default": {
                         "description": "successful operation"
@@ -491,9 +479,7 @@
                     "User"
                 ],
                 "summary": "User sent-green-light Api",
-                "parameters": [
-        
-                ],
+                "parameters": [],
                 "responses": {
                     "default": {
                         "description": "successful operation"
@@ -514,9 +500,7 @@
                     "User"
                 ],
                 "summary": "User mutual-green-light Api",
-                "parameters": [
-        
-                ],
+                "parameters": [],
                 "responses": {
                     "default": {
                         "description": "successful operation"
@@ -531,7 +515,6 @@
                 ]
             }
         }
-
     },
     "components": {
         "schemas": {
@@ -564,30 +547,30 @@
                         "type": "string",
                         "format": "password"
                     },
-                    "interested_in":{
+                    "interested_in": {
                         "description": "Enter interested_in",
                         "type": "array",
                         "items": {
                             "type": "string"
                         }
                     },
-                    "country":{
+                    "country": {
                         "description": "Enter country",
                         "type": "string"
                     },
-                    "state":{
+                    "state": {
                         "description": "Enter state",
                         "type": "string"
                     },
-                    "city":{
+                    "city": {
                         "description": "Enter city",
                         "type": "string"
                     },
-                    "zipcode":{
+                    "zipcode": {
                         "description": "Enter zipcode",
                         "type": "string"
                     },
-                    "latLng":{
+                    "latLng": {
                         "description": "Enter latLng",
                         "type": "object"
                     }
@@ -721,7 +704,7 @@
                             "PRIVATE",
                             "PUBLIC"
                         ],
-                        "default":"PUBLIC"
+                        "default": "PUBLIC"
                     },
                     "gender": {
                         "description": "Enter your gender",
@@ -731,7 +714,7 @@
                             "FEMALE",
                             "OTHER"
                         ],
-                        "default":"MALE"
+                        "default": "MALE"
                     },
                     "hobbies": {
                         "description": "Enter your hobbies",
@@ -770,8 +753,8 @@
                     },
                     "dob": {
                         "description": "Enter your dob",
-                        "type": "string" 
-                 },
+                        "type": "string"
+                    },
                     "gender": {
                         "description": "Enter your gender",
                         "type": "string"
@@ -779,32 +762,31 @@
                     "height": {
                         "description": "Enter your height",
                         "type": "string"
-                        
                     },
-                    "interested_in":{
+                    "interested_in": {
                         "description": "Enter interested_in",
                         "type": "array",
                         "items": {
                             "type": "string"
                         }
                     },
-                    "eyes":{
+                    "eyes": {
                         "description": "Enter eyes",
                         "type": "string"
                     },
-                    "hair_color":{
+                    "hair_color": {
                         "description": "Enter hair_color",
                         "type": "string"
                     },
-                    "eyes_other":{
+                    "eyes_other": {
                         "description": "Enter eyes",
                         "type": "string"
                     },
-                    "hair_color_other":{
+                    "hair_color_other": {
                         "description": "Enter hair_color",
                         "type": "string"
                     },
-                    "interests":{
+                    "interests": {
                         "description": "Enter interests",
                         "type": "array",
                         "items": {
@@ -828,8 +810,8 @@
                     },
                     "marijuana": {
                         "description": "Enter your marijuana",
-                        "type": "string" 
-                 },
+                        "type": "string"
+                    },
                     "drugs": {
                         "description": "Enter your drugs",
                         "type": "string"
@@ -837,29 +819,28 @@
                     "have_kids": {
                         "description": "Enter your have_kids",
                         "type": "string"
-                        
                     },
-                    "want_kids":{
+                    "want_kids": {
                         "description": "Enter want_kids here",
                         "type": "string"
                     },
-                    "astrology_sign":{
+                    "astrology_sign": {
                         "description": "Enter astrology_sign",
                         "type": "string"
                     },
-                    "ethinicity":{
+                    "ethinicity": {
                         "description": "Enter ethinicity",
                         "type": "string"
                     },
-                    "looking_for":{
+                    "looking_for": {
                         "description": "Enter looking_for",
                         "type": "string"
                     },
-                    "religion":{
+                    "religion": {
                         "description": "Enter religion",
                         "type": "string"
                     },
-                    "politics":{
+                    "politics": {
                         "description": "Enter politics",
                         "type": "string"
                     }
@@ -876,14 +857,14 @@
                     "work": {
                         "description": "Enter your work",
                         "type": "object",
-                       "items":{
-                        "type":"string"
-                       }
+                        "items": {
+                            "type": "string"
+                        }
                     },
                     "education_degree": {
                         "description": "Enter your education_degree",
-                        "type": "string" 
-                 },
+                        "type": "string"
+                    },
                     "education_school": {
                         "description": "Enter your education_school",
                         "type": "string"
@@ -906,40 +887,39 @@
                         "description": "Enter your location",
                         "type": "string"
                     },
-                   
-                    "country":{
+                    "country": {
                         "description": "Enter country",
                         "type": "string"
                     },
-                    "state":{
+                    "state": {
                         "description": "Enter state",
                         "type": "string"
                     },
-                    "city":{
+                    "city": {
                         "description": "Enter city",
                         "type": "string"
                     },
-                    "zipcode":{
+                    "zipcode": {
                         "description": "Enter zipcode",
                         "type": "string"
                     },
-                    "latLng":{
+                    "latLng": {
                         "description": "Enter latLng",
                         "type": "object"
                     }
                 }
-            },  
-         "images": {
-                    "type": "object",
-                    "properties": {
-                        "images": {
-                            "description": "Enter Images Here",
-                            "type": "array",
-                            "items":{
-                                "type":"string"
-                            }
+            },
+            "images": {
+                "type": "object",
+                "properties": {
+                    "images": {
+                        "description": "Enter Images Here",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
                         }
                     }
+                }
             },
             "save_light": {
                 "type": "object",
@@ -953,7 +933,6 @@
                         "description": "Enter your location",
                         "type": "string"
                     }
-                     
                 }
             },
             "search_matching_algo": {
@@ -962,8 +941,8 @@
                     "interested_in": {
                         "description": "Pass here interested_in ",
                         "type": "array",
-                        "items":{
-                            "type":"string"
+                        "items": {
+                            "type": "string"
                         }
                     },
                     "age_from": {
@@ -998,8 +977,6 @@
                         "description": "Enter your marital_status",
                         "type": "string"
                     }
-                    
-                     
                 }
             }
         },
@@ -1044,7 +1021,7 @@
                 }
             },
             "post_type": {
-                "description":"0:POST , 1:REEL",
+                "description": "0:POST , 1:REEL",
                 "name": "post_type",
                 "in": "query",
                 "required": false,
@@ -1055,7 +1032,7 @@
                 "explode": true
             },
             "media_type": {
-                "description":"0:IMAGE ,1:VIDEO",
+                "description": "0:IMAGE ,1:VIDEO",
                 "name": "media_type",
                 "in": "query",
                 "required": false,
@@ -1066,7 +1043,7 @@
                 "explode": true
             },
             "transaction_type": {
-                "description":"0:Buy coins ,1:Send coins, 2:Withdraw coins 3:Recieve coins",
+                "description": "0:Buy coins ,1:Send coins, 2:Withdraw coins 3:Recieve coins",
                 "name": "transaction_type",
                 "in": "query",
                 "required": false,

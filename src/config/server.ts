@@ -6,7 +6,7 @@ import http from "http";
 import fs from "fs";
 import https from "https";
 import bodyParser from "body-parser";
-// import fileUpload from "express-fileupload";
+import fileUpload from "express-fileupload";
 import { connect_to_db } from "./index";
 import user_routes from "../modules/user/user.routes";
 import swagger_ui from "swagger-ui-express";
@@ -24,7 +24,7 @@ if (env == "PROD") {
   port = process.env.PROD_PORT;
 }
 app.use(cors({ origin: "*" }));
-// app.use(fileUpload());
+app.use(fileUpload());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 

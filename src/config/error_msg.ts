@@ -4,38 +4,38 @@ import * as Models from '../models/index';
 import * as lodash from 'lodash';
 import { helpers } from '../middlewares/index'
 
-const create_admin = async () => {
-      try {
+// const create_admin = async () => {
+//       try {
 
-            // check admin exist or not
-            let query = { email: "admin@gmail.com" }
-            let projection = { __v: 0 }
-            let options = { lean: true }
-            let fetch_data: any = await DAO.getData(Models.Admin, query, projection, options);
+//             // check admin exist or not
+//             let query = { email: "admin@gmail.com" }
+//             let projection = { __v: 0 }
+//             let options = { lean: true }
+//             let fetch_data: any = await DAO.getData(Models.Admin, query, projection, options);
 
-            if (fetch_data.length == 0) {
+//             if (fetch_data.length == 0) {
 
-                  let default_password = 'qwerty';
-                  let password = await helpers.bcryptPassword(default_password)
+//                   let default_password = 'qwerty';
+//                   let password = await helpers.bcryptPassword(default_password)
 
-                  let saveData = {
-                        name: "super admin",
-                        image: null,
-                        email: "admin@gmail.com",
-                        password: password,
-                        roles: [],
-                        super_admin: true,
-                        created_at: +new Date()
-                  }
-                  await DAO.saveData(Models.Admin, saveData);
+//                   let saveData = {
+//                         name: "super admin",
+//                         image: null,
+//                         email: "admin@gmail.com",
+//                         password: password,
+//                         roles: [],
+//                         super_admin: true,
+//                         created_at: +new Date()
+//                   }
+//                   await DAO.saveData(Models.Admin, saveData);
 
-            }
+//             }
 
-      }
-      catch (err) {
-            throw err;
-      }
-}
+//       }
+//       catch (err) {
+//             throw err;
+//       }
+// }
 
 
 
@@ -270,7 +270,7 @@ const bootstrap_res_msgs = async () => {
 const bootstrap_data = async () => {
       try {
 
-            await create_admin()
+            // await create_admin()
             await bootstrap_res_msgs()
 
       }
