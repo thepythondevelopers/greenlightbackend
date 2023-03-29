@@ -11,7 +11,7 @@
             "description": "local server"
           },
           {
-            "url": " https://greenlightapi.pamsar.com/",
+            "url": "http://greenlightapi.pamsar.com:3004/docs/",
             "description":"Production Server"
           }
     ],
