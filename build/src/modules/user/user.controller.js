@@ -277,26 +277,47 @@ class userController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 let { _id: user_id } = req.user_data;
-                let { first_name, last_name, eyes_other, looking_other, hair_color_other, ethinicity_other, politics_other, dob, gender, interested_in, height, eyes, hair_color, interests } = req.body;
+                let { first_name, last_name, eyes_other, hair_color_other, ethinicity_other, dob, gender, interested_in, height, eyes, hair_color, interests } = req.body;
                 let query = { _id: user_id };
-                let user_data = {
-                    first_name: first_name,
-                    last_name: last_name,
-                    dob: dob,
-                    gender: gender,
-                    interested_in: interested_in,
-                    height: height,
-                    eyes: eyes,
-                    eyes_other: eyes_other,
-                    hair_color: hair_color,
-                    interests: interests,
-                    hair_color_other: hair_color_other,
-                    ethinicity_other: ethinicity_other,
-                    politics_other: politics_other,
-                    looking_other: looking_other
-                };
+                let set_data = {};
+                if (first_name) {
+                    set_data.first_name = first_name;
+                }
+                if (last_name) {
+                    set_data.last_name = last_name;
+                }
+                if (dob) {
+                    set_data.dob = dob;
+                }
+                if (gender) {
+                    set_data.gender = gender;
+                }
+                if (interested_in) {
+                    set_data.interested_in = interested_in;
+                }
+                if (height) {
+                    set_data.height = height;
+                }
+                if (eyes) {
+                    set_data.eyes = eyes;
+                }
+                if (eyes_other) {
+                    set_data.eyes_other = eyes_other;
+                }
+                if (hair_color) {
+                    set_data.hair_color = hair_color;
+                }
+                if (interests) {
+                    set_data.interests = interests;
+                }
+                if (hair_color_other) {
+                    set_data.hair_color_other = hair_color_other;
+                }
+                if (ethinicity_other) {
+                    set_data.ethinicity_other = ethinicity_other;
+                }
                 let options = { new: true };
-                let response = yield DAO.findAndUpdate(Models.Users, query, user_data, options);
+                let response = yield DAO.findAndUpdate(Models.Users, query, set_data, options);
                 return res.json(response);
             }
             catch (err) {
@@ -308,23 +329,50 @@ class userController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 let { _id: user_id } = req.user_data;
-                let { alcohol, smoking, marijuana, drugs, have_kids, want_kids, astrology_sign, ethinicity, looking_for, religion, politics } = req.body;
+                let { alcohol, smoking, politics_other, looking_other, marijuana, drugs, have_kids, want_kids, astrology_sign, ethinicity, looking_for, religion, politics } = req.body;
                 let query = { _id: user_id };
-                let user_data = {
-                    alcohol: alcohol,
-                    smoking: smoking,
-                    marijuana: marijuana,
-                    drugs: drugs,
-                    have_kids: have_kids,
-                    want_kids: want_kids,
-                    astrology_sign: astrology_sign,
-                    ethinicity: ethinicity,
-                    looking_for: looking_for,
-                    religion: religion,
-                    politics: politics
-                };
+                let set_data = {};
+                if (alcohol) {
+                    set_data.alcohol = alcohol;
+                }
+                if (smoking) {
+                    set_data.smoking = smoking;
+                }
+                if (marijuana) {
+                    set_data.marijuana = marijuana;
+                }
+                if (drugs) {
+                    set_data.drugs = drugs;
+                }
+                if (have_kids) {
+                    set_data.have_kids = have_kids;
+                }
+                if (want_kids) {
+                    set_data.want_kids = want_kids;
+                }
+                if (astrology_sign) {
+                    set_data.astrology_sign = astrology_sign;
+                }
+                if (ethinicity) {
+                    set_data.ethinicity = ethinicity;
+                }
+                if (looking_for) {
+                    set_data.looking_for = looking_for;
+                }
+                if (religion) {
+                    set_data.religion = religion;
+                }
+                if (politics) {
+                    set_data.politics = politics;
+                }
+                if (politics_other) {
+                    set_data.politics_other = politics_other;
+                }
+                if (looking_other) {
+                    set_data.looking_other = looking_other;
+                }
                 let options = { new: true };
-                let response = yield DAO.findAndUpdate(Models.Users, query, user_data, options);
+                let response = yield DAO.findAndUpdate(Models.Users, query, set_data, options);
                 return res.json(response);
             }
             catch (err) {
@@ -336,17 +384,26 @@ class userController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 let { _id: user_id } = req.user_data;
-                let { have_car, work, education_degree, education_school, aout_me } = req.body;
+                let { have_car, work, education_degree, education_school, about_me } = req.body;
                 let query = { _id: user_id };
-                let user_data = {
-                    have_car: have_car,
-                    work: work,
-                    education_degree: education_degree,
-                    education_school: education_school,
-                    about_me: aout_me
-                };
+                let set_data = {};
+                if (have_car) {
+                    set_data.have_car = have_car;
+                }
+                if (work) {
+                    set_data.work = work;
+                }
+                if (education_degree) {
+                    set_data.education_degree = education_degree;
+                }
+                if (education_school) {
+                    set_data.education_school = education_school;
+                }
+                if (about_me) {
+                    set_data.about_me = about_me;
+                }
                 let options = { new: true };
-                let response = yield DAO.findAndUpdate(Models.Users, query, user_data, options);
+                let response = yield DAO.findAndUpdate(Models.Users, query, set_data, options);
                 return res.json(response);
             }
             catch (err) {

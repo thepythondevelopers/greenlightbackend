@@ -792,6 +792,14 @@
                         "items": {
                             "type": "string"
                         }
+                    },
+                    "politics_other": {
+                        "description": "Enter politics other",
+                        "type": "string"
+                    },
+                    "looking_other": {
+                        "description": "Enter politics other",
+                        "type": "string"
                     }
                 }
             },
