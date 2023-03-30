@@ -44,7 +44,7 @@ class userController {
                     generateToken
                 );
                 // send welcome email to user
-                await email_services.sendWelcomeMail(create_user);
+                // await email_services.sendWelcomeMail(create_user);
 
                 // return response
                 res.json({ message: "Sign Up Successfully." });
@@ -411,12 +411,12 @@ query
                 }
             });
 
-           let saveData= await Models.Users.updateOne(
-                { _id: req.user._id },
-                { $push: { images: file_name } }
-            )
+        //    let saveData= await Models.Users.updateOne(
+        //         { _id: req.user._id },
+        //         { $push: { images: file_name } }
+        //     )
            
-            console.log("save_data",saveData)
+        //     console.log("save_data",saveData)
 
             return res.json({ message: 'File uploaded successfully.' });
 

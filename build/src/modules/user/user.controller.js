@@ -66,7 +66,7 @@ class userController {
                     // fetch user response
                     let response = yield userServices.make_user_response(generateToken);
                     // send welcome email to user
-                    yield email_services.sendWelcomeMail(create_user);
+                    // await email_services.sendWelcomeMail(create_user);
                     // return response
                     res.json({ message: "Sign Up Successfully." });
                 }
@@ -478,8 +478,11 @@ class userController {
                         return data;
                     }
                 });
-                let saveData = yield Models.Users.updateOne({ _id: req.user._id }, { $push: { images: file_name } });
-                console.log("save_data", saveData);
+                //    let saveData= await Models.Users.updateOne(
+                //         { _id: req.user._id },
+                //         { $push: { images: file_name } }
+                //     )
+                //     console.log("save_data",saveData)
                 return res.json({ message: 'File uploaded successfully.' });
             }
             catch (err) {
