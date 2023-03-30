@@ -417,17 +417,30 @@ class userController {
                 let { _id: user_id } = req.user_data;
                 let { location, latLng, mobile, country, state, city, zipcode } = req.body;
                 let query = { _id: user_id };
-                let user_data = {
-                    location: location,
-                    latLng: latLng,
-                    mobile: mobile,
-                    country: country,
-                    state: state,
-                    city: city,
-                    zipcode: zipcode
-                };
+                let set_data;
+                if (location) {
+                    set_data.location = location;
+                }
+                if (latLng) {
+                    set_data.latLng = latLng;
+                }
+                if (mobile) {
+                    set_data.mobile = mobile;
+                }
+                if (country) {
+                    set_data.country = country;
+                }
+                if (state) {
+                    set_data.state = state;
+                }
+                if (city) {
+                    set_data.city = city;
+                }
+                if (zipcode) {
+                    set_data.zipcode = zipcode;
+                }
                 let options = { new: true };
-                let response = yield DAO.findAndUpdate(Models.Users, query, user_data, options);
+                let response = yield DAO.findAndUpdate(Models.Users, query, set_data, options);
                 return res.json(response);
             }
             catch (err) {
@@ -438,25 +451,35 @@ class userController {
     static profileImage(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                let random = yield userServices.random_code(8);
-                console.log("fsofsdkflsd");
+                let { file: { name, data, mimetype } } = req.files;
                 const s3 = new aws_sdk_1.default.S3({
                     accessKeyId: process.env.AWS_ID,
                     secretAccessKey: process.env.AWS_SECRET
                 });
-                console.log("ajfnanfkfs");
-                console.log("FILES", req.files.image[0].originalname);
-                const params = {
+                // console.log("FILES",req.files)
+                console.log("image", name);
+                console.log("Buffer", data);
+                let file_name = yield userServices.generate_file_name(name);
+                console.log("file_name--", file_name);
+                let params = {
                     Bucket: process.env.AWS_BUCKET_NAME,
-                    Key: random + req.files.image[0].originalname,
-                    Body: req.files.image[0].buffer,
-                    ContentType: req.files.image[0].mimetype
+                    Key: file_name,
+                    ACL: 'public-read',
+                    Body: data,
+                    ContentType: mimetype
                 };
-                console.log("PArams", params);
                 //Uploading files to the bucket
-                const stored = yield s3.upload(params).promise();
-                console.log("Stored---", stored);
-                yield Models.Users.updateOne({ _id: req.user._id }, { $push: { images: stored.key } });
+                const stored = s3.upload(params, (err, data) => {
+                    if (err) {
+                        console.error("uploading error", err);
+                    }
+                    else {
+                        console.error("uploading sucessfull", data);
+                        return data;
+                    }
+                });
+                let saveData = yield Models.Users.updateOne({ _id: req.user._id }, { $push: { images: file_name } });
+                console.log("save_data", saveData);
                 return res.json({ message: 'File uploaded successfully.' });
             }
             catch (err) {
@@ -567,6 +590,7 @@ class userController {
                             },
                         }
                     },
+                    country: country
                 };
                 let response = yield DAO.getData(Models.Users, query, { __v: 0 }, { lean: true });
                 console.log("LENGTH", response.length);

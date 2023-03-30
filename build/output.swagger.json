@@ -11,7 +11,7 @@
             "description": "local server"
         },
         {
-            "url": "http://greenlightapi.pamsar.com:3004/docs/",
+            "url": "http://greenlightapi.pamsar.com:3004/",
             "description": "Production Server"
         }
     ],
@@ -793,12 +793,8 @@
                             "type": "string"
                         }
                     },
-                    "politics_other": {
-                        "description": "Enter politics other",
-                        "type": "string"
-                    },
-                    "looking_other": {
-                        "description": "Enter politics other",
+                    "ethinicity_other": {
+                        "description": "Enter Ethnicity other",
                         "type": "string"
                     }
                 }
@@ -850,6 +846,14 @@
                     },
                     "politics": {
                         "description": "Enter politics",
+                        "type": "string"
+                    },
+                    "politics_other": {
+                        "description": "Enter politics other",
+                        "type": "string"
+                    },
+                    "looking_other": {
+                        "description": "Enter politics other",
                         "type": "string"
                     }
                 }

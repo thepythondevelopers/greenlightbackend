@@ -4,6 +4,7 @@ import * as Models from "../../models";
 import { app_constant } from "../../config/index";
 import { generateToken, handleCustomError, helpers, } from "../../middlewares/index";
 import * as email_services from "../../middlewares/email_services";
+import moment from "moment"
 const user_scope = app_constant.scope.user;
 
 
@@ -101,7 +102,6 @@ const setUserData = async (data: any) => {
     let hassed_password = await helpers.bcryptPassword(password);
   
     let otp = await helpers.GenerateOtp()
-   
     let data_to_save: any = {
       password : hassed_password,
       dob : dob,
@@ -116,9 +116,9 @@ const setUserData = async (data: any) => {
       latLng : latLng,
       otp:otp
     };
-
+    console.log("DATA-to save",data_to_save)
     let response: any = await DAO.saveData(Models.Users, data_to_save);
-
+    console.log("resp,",response)
     return response;
   } catch (err) {
     throw err;
@@ -166,6 +166,36 @@ const random_code=async(length:number)=> {
   return result;
 }
 
+const generate_file_name = async (file_name: string) => {
+  try {
+
+      // console.log("<--file_name-->", file_name)
+
+      let current_millis = moment().format('x')
+      let raw_file_name = file_name.split(/\s/).join('');
+      let split_file = raw_file_name.split('.')
+
+      // spiting by all special charcters
+      let split_all = split_file[0].split(/[^a-zA-Z0-9]/g).join('_')
+
+      let name = split_all.toLowerCase()
+      let ext = split_file[1]
+
+      // console.log("<--name-->", name)
+      // console.log("<--ext-->", ext)
+      
+
+      let gen_file_name = `${name}_${current_millis}.${ext}`
+
+      // console.log("<--gen_file_name-->", gen_file_name)
+
+      return gen_file_name.toLowerCase()
+
+  }
+  catch (err) {
+      throw err;
+  }
+}
 
 export {
   Generate_User_Token,
@@ -174,6 +204,7 @@ export {
   verifyUserInfo,
   setUserData,
   createNewUser,
-  random_code
+  random_code,
+  generate_file_name
  
 };

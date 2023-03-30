@@ -23,7 +23,7 @@ router.post("/personal-information",authenticator,userController.personalInforma
 router.post("/personal-preferences",authenticator,userController.personalPrefrences)
 router.post("/professional-information",authenticator,userController.professinalInformation)
 router.post("/location-information",authenticator,userController.locationInformation)
-router.post("/profile-image",upload.fields([{name:'image',maxCount:1}]),authenticator,userController.profileImage)
+router.post("/profile-image",authenticator,userController.profileImage)
 router.post("/profile-image-delete/:key",authenticator,userController.profileImageDelete);
 router.post("/image-position",authenticator,userController.imagePosition);
 router.post("/matching-algo",authenticator,userController.matchingAlgorithm)

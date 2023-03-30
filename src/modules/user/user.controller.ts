@@ -8,6 +8,7 @@ import AWS from 'aws-sdk'
 import { config } from 'dotenv';
 import moment from 'moment'
 import { AgeFromDateString } from 'age-calculator'
+import { Model } from "mongoose";
 config();
 
 
@@ -354,18 +355,23 @@ query
             let { location, latLng, mobile, country, state, city, zipcode } = req.body
 
             let query = { _id: user_id }
-            let user_data = {
-                location: location,
-                latLng: latLng,
-                mobile: mobile,
-                country: country,
-                state: state,
-                city: city,
-                zipcode: zipcode
-            }
+
+            let set_data:any
+
+            if(location){set_data.location=location}
+            if(latLng){set_data.latLng=latLng}
+            if(mobile){set_data.mobile=mobile}
+
+            if(country){set_data.country=country}
+            if(state){set_data.state=state}
+
+            if(city){set_data.city=city}
+
+            if(zipcode){set_data.zipcode=zipcode}
+
 
             let options = { new: true }
-            let response = await DAO.findAndUpdate(Models.Users, query, user_data, options)
+            let response = await DAO.findAndUpdate(Models.Users, query, set_data, options)
             return res.json(response)
         } catch (err) {
             handleCatch(res, err)
@@ -374,29 +380,43 @@ query
 
     static async profileImage(req: any, res: express.Response) {
         try {
-            let random = await userServices.random_code(8);
-            console.log("fsofsdkflsd")
+            let { file: { name, data, mimetype } } = req.files
+
             const s3 = new AWS.S3({
                 accessKeyId: process.env.AWS_ID,
                 secretAccessKey: process.env.AWS_SECRET
             });
-                console.log("ajfnanfkfs")
-                console.log("FILES",req.files.image[0].originalname)
-            const params = {
-                Bucket: process.env.AWS_BUCKET_NAME,
-                Key: random + req.files.image[0].originalname, // File name you want to save as in S3
-                Body: req.files.image[0].buffer,
-                ContentType: req.files.image[0].mimetype
-            }
-            console.log("PArams",params)
-            //Uploading files to the bucket
+                // console.log("FILES",req.files)
+                console.log("image",name)
+                console.log("Buffer", data)
+                
 
-            const stored: any = await s3.upload(params).promise()
-            console.log("Stored---",stored)
-            await Models.Users.updateOne(
+                let file_name = await userServices.generate_file_name(name)
+                console.log("file_name--",file_name)
+            
+            let params = {
+                Bucket:  process.env.AWS_BUCKET_NAME,
+                Key: file_name, 
+                ACL: 'public-read',
+                Body: data,
+                ContentType: mimetype
+            }
+           
+            //Uploading files to the bucket
+          const stored:any = s3.upload(params, (err: any, data: any) => {
+                if (err) { console.error("uploading error", err) }
+                else {
+                    console.error("uploading sucessfull", data)
+                    return data;
+                }
+            });
+
+           let saveData= await Models.Users.updateOne(
                 { _id: req.user._id },
-                { $push: { images: stored.key } }
+                { $push: { images: file_name } }
             )
+           
+            console.log("save_data",saveData)
 
             return res.json({ message: 'File uploaded successfully.' });
 
@@ -537,7 +557,7 @@ query
                     }
                 },
                 
-                // country:country
+                country:country
                 
             }
             let response: any = await DAO.getData(Models.Users, query, { __v: 0 }, { lean: true })

@@ -27,12 +27,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.random_code = exports.createNewUser = exports.setUserData = exports.verifyUserInfo = exports.make_user_response = exports.save_session_data = exports.Generate_User_Token = void 0;
+exports.generate_file_name = exports.random_code = exports.createNewUser = exports.setUserData = exports.verifyUserInfo = exports.make_user_response = exports.save_session_data = exports.Generate_User_Token = void 0;
 const DAO = __importStar(require("../../DAO"));
 const Models = __importStar(require("../../models"));
 const index_1 = require("../../config/index");
 const index_2 = require("../../middlewares/index");
+const moment_1 = __importDefault(require("moment"));
 const user_scope = index_1.app_constant.scope.user;
 const Generate_User_Token = (_id, req_data) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -127,7 +131,9 @@ const setUserData = (data) => __awaiter(void 0, void 0, void 0, function* () {
             latLng: latLng,
             otp: otp
         };
+        console.log("DATA-to save", data_to_save);
         let response = yield DAO.saveData(Models.Users, data_to_save);
+        console.log("resp,", response);
         return response;
     }
     catch (err) {
@@ -174,3 +180,24 @@ const random_code = (length) => __awaiter(void 0, void 0, void 0, function* () {
     return result;
 });
 exports.random_code = random_code;
+const generate_file_name = (file_name) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        // console.log("<--file_name-->", file_name)
+        let current_millis = moment_1.default().format('x');
+        let raw_file_name = file_name.split(/\s/).join('');
+        let split_file = raw_file_name.split('.');
+        // spiting by all special charcters
+        let split_all = split_file[0].split(/[^a-zA-Z0-9]/g).join('_');
+        let name = split_all.toLowerCase();
+        let ext = split_file[1];
+        // console.log("<--name-->", name)
+        // console.log("<--ext-->", ext)
+        let gen_file_name = `${name}_${current_millis}.${ext}`;
+        // console.log("<--gen_file_name-->", gen_file_name)
+        return gen_file_name.toLowerCase();
+    }
+    catch (err) {
+        throw err;
+    }
+});
+exports.generate_file_name = generate_file_name;

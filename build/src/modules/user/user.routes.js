@@ -24,7 +24,7 @@ router.post("/personal-information", authenticator_1.default, user_controller_1.
 router.post("/personal-preferences", authenticator_1.default, user_controller_1.default.personalPrefrences);
 router.post("/professional-information", authenticator_1.default, user_controller_1.default.professinalInformation);
 router.post("/location-information", authenticator_1.default, user_controller_1.default.locationInformation);
-router.post("/profile-image", upload.fields([{ name: 'image', maxCount: 1 }]), authenticator_1.default, user_controller_1.default.profileImage);
+router.post("/profile-image", authenticator_1.default, user_controller_1.default.profileImage);
 router.post("/profile-image-delete/:key", authenticator_1.default, user_controller_1.default.profileImageDelete);
 router.post("/image-position", authenticator_1.default, user_controller_1.default.imagePosition);
 router.post("/matching-algo", authenticator_1.default, user_controller_1.default.matchingAlgorithm);
