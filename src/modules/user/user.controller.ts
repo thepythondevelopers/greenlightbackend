@@ -546,7 +546,7 @@ query
                 interested_in: { $eq: gender },
                 gender:{$in:interested_in},
 
-                $and:[
+                $or:[
                     { _id:{$ne:user_id}},
                     { _id:{$in:light_id_Arr}},
                      { dob:{$gte:greaterAge}},
