@@ -44,7 +44,7 @@ class userController {
                     generateToken
                 );
                 // send welcome email to user
-                // await email_services.sendWelcomeMail(create_user);
+                // await email_services.sendWelcomeMail(create_user);np
 
                 // return response
                 res.json({ message: "Sign Up Successfully." });
@@ -276,7 +276,6 @@ query
             if(hair_color){set_data.hair_color=hair_color}
             if(interests){set_data.interests=interests}
             if(hair_color_other){set_data.hair_color_other=hair_color_other}
-            if(ethinicity_other){set_data.ethinicity_other=ethinicity_other}
             
 
             let options = { new: true }
@@ -292,7 +291,7 @@ query
         try {
             let { _id: user_id } = req.user_data
 
-            let { alcohol, smoking,politics_other,looking_other, marijuana, drugs, have_kids, want_kids, astrology_sign, ethinicity, looking_for, religion, politics } = req.body
+            let { alcohol, smoking,politics_other,looking_other,ethinicity_other, marijuana, drugs, have_kids, want_kids, astrology_sign, ethinicity, looking_for, religion, politics } = req.body
 
             let query = { _id: user_id }
 
@@ -306,6 +305,7 @@ query
             if(want_kids){set_data.want_kids=want_kids}
             if(astrology_sign){set_data.astrology_sign=astrology_sign}
             if(ethinicity){set_data.ethinicity=ethinicity}
+            if(ethinicity_other){set_data.ethinicity_other=ethinicity_other}
             if(looking_for){set_data.looking_for=looking_for}
             if(religion){set_data.religion=religion}
             if(politics){set_data.politics=politics}
@@ -327,14 +327,16 @@ query
         try {
             let { _id: user_id } = req.user_data
 
-            let { have_car, work, education_degree, education_school, about_me } = req.body
+            let { have_car, work, education_degree,work_position, work_employer,education_school, about_me } = req.body
 
             let query = { _id: user_id }
 
             let set_data:any={}
 
             if(have_car){set_data.have_car=have_car}
-            if(work){set_data.work=work}
+            if(work_position){set_data.work_position=work_position}
+            if(work_employer){set_data.work_employer=work_employer}
+
             if(education_degree){set_data.education_degree=education_degree}
             if(education_school){set_data.education_school=education_school}
             if(about_me){set_data.about_me=about_me}
@@ -356,7 +358,10 @@ query
 
             let query = { _id: user_id }
 
-            let set_data:any
+            let set_data:any={}
+
+            console.log("loc",location),
+            console.log("mob",mobile)
 
             if(location){set_data.location=location}
             if(latLng){set_data.latLng=latLng}
@@ -381,11 +386,8 @@ query
     static async profileImage(req: any, res: express.Response) {
         try {
             let { file: { name, data, mimetype } } = req.files
-
-            const s3 = new AWS.S3({
-                accessKeyId: process.env.AWS_ID,
-                secretAccessKey: process.env.AWS_SECRET
-            });
+            let {_id:user_id} = req.user_data
+           
                 // console.log("FILES",req.files)
                 console.log("image",name)
                 console.log("Buffer", data)
@@ -403,13 +405,7 @@ query
             }
            
             //Uploading files to the bucket
-          const stored:any = s3.upload(params, (err: any, data: any) => {
-                if (err) { console.error("uploading error", err) }
-                else {
-                    console.error("uploading sucessfull", data)
-                    return data;
-                }
-            });
+          const stored:any = await userServices.upload_file_to_spaces(params)
 
         //    let saveData= await Models.Users.updateOne(
         //         { _id: req.user._id },
@@ -417,6 +413,19 @@ query
         //     )
            
         //     console.log("save_data",saveData)
+
+        let query ={_id:user_id}
+        let projection = {__v:0}
+        let options ={lean:true}
+        let getUser:any = await DAO.getData(Models.Users,query,projection,options)
+
+        let {images} = getUser[0]
+
+        images.push(file_name)
+
+        let update ={images:images}
+        let update_data = await DAO.findAndUpdate(Models.Users,query,update,{new:true})
+        console.log("update_data",update_data)
 
             return res.json({ message: 'File uploaded successfully.' });
 
@@ -436,7 +445,7 @@ query
 
             var params = { Bucket: process.env.AWS_BUCKET_NAME, Key: key };
 
-            const stored = await s3.deleteObject(params).promise()
+            const stored = await userServices.delete_file_from_spaces(params)
             let user: any = await Models.Users.findOne({ _id: req.user._id });
             let image: any = user.images;
             image = image.filter(item => item !== key);

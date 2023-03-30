@@ -66,7 +66,7 @@ class userController {
                     // fetch user response
                     let response = yield userServices.make_user_response(generateToken);
                     // send welcome email to user
-                    // await email_services.sendWelcomeMail(create_user);
+                    // await email_services.sendWelcomeMail(create_user);np
                     // return response
                     res.json({ message: "Sign Up Successfully." });
                 }
@@ -313,9 +313,6 @@ class userController {
                 if (hair_color_other) {
                     set_data.hair_color_other = hair_color_other;
                 }
-                if (ethinicity_other) {
-                    set_data.ethinicity_other = ethinicity_other;
-                }
                 let options = { new: true };
                 let response = yield DAO.findAndUpdate(Models.Users, query, set_data, options);
                 return res.json(response);
@@ -329,7 +326,7 @@ class userController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 let { _id: user_id } = req.user_data;
-                let { alcohol, smoking, politics_other, looking_other, marijuana, drugs, have_kids, want_kids, astrology_sign, ethinicity, looking_for, religion, politics } = req.body;
+                let { alcohol, smoking, politics_other, looking_other, ethinicity_other, marijuana, drugs, have_kids, want_kids, astrology_sign, ethinicity, looking_for, religion, politics } = req.body;
                 let query = { _id: user_id };
                 let set_data = {};
                 if (alcohol) {
@@ -355,6 +352,9 @@ class userController {
                 }
                 if (ethinicity) {
                     set_data.ethinicity = ethinicity;
+                }
+                if (ethinicity_other) {
+                    set_data.ethinicity_other = ethinicity_other;
                 }
                 if (looking_for) {
                     set_data.looking_for = looking_for;
@@ -384,14 +384,17 @@ class userController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 let { _id: user_id } = req.user_data;
-                let { have_car, work, education_degree, education_school, about_me } = req.body;
+                let { have_car, work, education_degree, work_position, work_employer, education_school, about_me } = req.body;
                 let query = { _id: user_id };
                 let set_data = {};
                 if (have_car) {
                     set_data.have_car = have_car;
                 }
-                if (work) {
-                    set_data.work = work;
+                if (work_position) {
+                    set_data.work_position = work_position;
+                }
+                if (work_employer) {
+                    set_data.work_employer = work_employer;
                 }
                 if (education_degree) {
                     set_data.education_degree = education_degree;
@@ -417,7 +420,9 @@ class userController {
                 let { _id: user_id } = req.user_data;
                 let { location, latLng, mobile, country, state, city, zipcode } = req.body;
                 let query = { _id: user_id };
-                let set_data;
+                let set_data = {};
+                console.log("loc", location),
+                    console.log("mob", mobile);
                 if (location) {
                     set_data.location = location;
                 }
@@ -452,10 +457,7 @@ class userController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 let { file: { name, data, mimetype } } = req.files;
-                const s3 = new aws_sdk_1.default.S3({
-                    accessKeyId: process.env.AWS_ID,
-                    secretAccessKey: process.env.AWS_SECRET
-                });
+                let { _id: user_id } = req.user_data;
                 // console.log("FILES",req.files)
                 console.log("image", name);
                 console.log("Buffer", data);
@@ -469,20 +471,21 @@ class userController {
                     ContentType: mimetype
                 };
                 //Uploading files to the bucket
-                const stored = s3.upload(params, (err, data) => {
-                    if (err) {
-                        console.error("uploading error", err);
-                    }
-                    else {
-                        console.error("uploading sucessfull", data);
-                        return data;
-                    }
-                });
+                const stored = yield userServices.upload_file_to_spaces(params);
                 //    let saveData= await Models.Users.updateOne(
                 //         { _id: req.user._id },
                 //         { $push: { images: file_name } }
                 //     )
                 //     console.log("save_data",saveData)
+                let query = { _id: user_id };
+                let projection = { __v: 0 };
+                let options = { lean: true };
+                let getUser = yield DAO.getData(Models.Users, query, projection, options);
+                let { images } = getUser[0];
+                images.push(file_name);
+                let update = { images: images };
+                let update_data = yield DAO.findAndUpdate(Models.Users, query, update, { new: true });
+                console.log("update_data", update_data);
                 return res.json({ message: 'File uploaded successfully.' });
             }
             catch (err) {
@@ -499,7 +502,7 @@ class userController {
                     secretAccessKey: process.env.AWS_SECRET
                 });
                 var params = { Bucket: process.env.AWS_BUCKET_NAME, Key: key };
-                const stored = yield s3.deleteObject(params).promise();
+                const stored = yield userServices.delete_file_from_spaces(params);
                 let user = yield Models.Users.findOne({ _id: req.user._id });
                 let image = user.images;
                 image = image.filter(item => item !== key);

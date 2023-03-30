@@ -31,12 +31,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.generate_file_name = exports.random_code = exports.createNewUser = exports.setUserData = exports.verifyUserInfo = exports.make_user_response = exports.save_session_data = exports.Generate_User_Token = void 0;
+exports.delete_file_from_spaces = exports.upload_file_to_spaces = exports.generate_file_name = exports.random_code = exports.createNewUser = exports.setUserData = exports.verifyUserInfo = exports.make_user_response = exports.save_session_data = exports.Generate_User_Token = void 0;
 const DAO = __importStar(require("../../DAO"));
 const Models = __importStar(require("../../models"));
 const index_1 = require("../../config/index");
 const index_2 = require("../../middlewares/index");
 const moment_1 = __importDefault(require("moment"));
+const aws_sdk_1 = __importDefault(require("aws-sdk"));
 const user_scope = index_1.app_constant.scope.user;
 const Generate_User_Token = (_id, req_data) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -201,3 +202,49 @@ const generate_file_name = (file_name) => __awaiter(void 0, void 0, void 0, func
     }
 });
 exports.generate_file_name = generate_file_name;
+const upload_file_to_spaces = (params) => {
+    return new Promise((resolve, reject) => {
+        try {
+            const s3 = new aws_sdk_1.default.S3({
+                accessKeyId: process.env.AWS_ID,
+                secretAccessKey: process.env.AWS_SECRET
+            });
+            s3.upload(params, (err, data) => {
+                if (err) {
+                    console.error("uploading error", err);
+                }
+                else {
+                    console.error("uploading sucessfull", data);
+                    return resolve(data);
+                }
+            });
+        }
+        catch (err) {
+            return reject(err);
+        }
+    });
+};
+exports.upload_file_to_spaces = upload_file_to_spaces;
+const delete_file_from_spaces = (params) => {
+    return new Promise((resolve, reject) => {
+        try {
+            const s3 = new aws_sdk_1.default.S3({
+                accessKeyId: process.env.AWS_ID,
+                secretAccessKey: process.env.AWS_SECRET
+            });
+            s3.deleteObject(params, (err, data) => {
+                if (err) {
+                    console.error("delete error", err);
+                }
+                else {
+                    console.error("delete sucessfull", data);
+                    return resolve(data);
+                }
+            });
+        }
+        catch (err) {
+            return reject(err);
+        }
+    });
+};
+exports.delete_file_from_spaces = delete_file_from_spaces;

@@ -6,4 +6,6 @@ declare const setUserData: (data: any) => Promise<any>;
 declare const createNewUser: (data: any) => Promise<unknown>;
 declare const random_code: (length: number) => Promise<string>;
 declare const generate_file_name: (file_name: string) => Promise<string>;
-export { Generate_User_Token, save_session_data, make_user_response, verifyUserInfo, setUserData, createNewUser, random_code, generate_file_name };
+declare const upload_file_to_spaces: (params: any) => Promise<unknown>;
+declare const delete_file_from_spaces: (params: any) => Promise<unknown>;
+export { Generate_User_Token, save_session_data, make_user_response, verifyUserInfo, setUserData, createNewUser, random_code, generate_file_name, upload_file_to_spaces, delete_file_from_spaces };

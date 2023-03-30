@@ -5,6 +5,7 @@ import { app_constant } from "../../config/index";
 import { generateToken, handleCustomError, helpers, } from "../../middlewares/index";
 import * as email_services from "../../middlewares/email_services";
 import moment from "moment"
+import AWS from 'aws-sdk'
 const user_scope = app_constant.scope.user;
 
 
@@ -197,6 +198,52 @@ const generate_file_name = async (file_name: string) => {
   }
 }
 
+const upload_file_to_spaces = (params: any) => {
+  return new Promise((resolve, reject) => {
+      try {
+
+        const s3 = new AWS.S3({
+          accessKeyId: process.env.AWS_ID,
+          secretAccessKey: process.env.AWS_SECRET
+      });
+
+          s3.upload(params, (err: any, data: any) => {
+              if (err) { console.error("uploading error", err) }
+              else {
+                  console.error("uploading sucessfull", data)
+                  return resolve(data);
+              }
+          });
+
+      } catch (err) {
+          return reject(err);
+      }
+  });
+}
+
+const delete_file_from_spaces = (params: any) => {
+  return new Promise((resolve, reject) => {
+      try {
+
+        const s3 = new AWS.S3({
+          accessKeyId: process.env.AWS_ID,
+          secretAccessKey: process.env.AWS_SECRET
+      });
+
+          s3.deleteObject(params, (err: any, data: any) => {
+              if (err) { console.error("delete error", err) }
+              else {
+                  console.error("delete sucessfull", data)
+                  return resolve(data);
+              }
+          });
+
+      } catch (err) {
+          return reject(err);
+      }
+  });
+}
+
 export {
   Generate_User_Token,
   save_session_data,
@@ -205,6 +252,8 @@ export {
   setUserData,
   createNewUser,
   random_code,
-  generate_file_name
+  generate_file_name,
+  upload_file_to_spaces,
+  delete_file_from_spaces
  
 };
