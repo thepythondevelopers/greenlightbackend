@@ -519,36 +519,42 @@ query
             let checkAge = moment().subtract(18,'years').toISOString();
             console.log("AGE---CHECK",checkAge)
 
-            let light_id_Arr:any =[]
-            let query_red ={user:user_id,light:"Red"}
-            let getRedLight:any = await DAO.getData(Models.Light,query_red,{__v:0},{lean:true})
-            console.log("REDLIGHT",getRedLight)
+            // let light_id_Arr:any =[]
+            // let query_red ={user:user_id,light:"Red"}
+            // let getRedLight:any = await DAO.getData(Models.Light,query_red,{__v:0},{lean:true})
+            // console.log("REDLIGHT",getRedLight)
 
              
-            for(let i of getRedLight){
-                light_id_Arr.push(i.sent)
-            }
+            // for(let i of getRedLight){
+            //     light_id_Arr.push(i.sent)
+            // }
 
-            let query_yellow ={user:user_id,light:"Yellow"}
-            let getYellowLight:any = await DAO.getData(Models.Light,query_yellow,{__v:0},{lean:true})
-            console.log("YellowLihgt",getYellowLight)
+            // let query_yellow ={user:user_id,light:"Yellow"}
+            // let getYellowLight:any = await DAO.getData(Models.Light,query_yellow,{__v:0},{lean:true})
+            // console.log("YellowLihgt",getYellowLight)
 
-            for(let i of getYellowLight){
-                light_id_Arr.push(i.sent)
+            // for(let i of getYellowLight){
+            //     light_id_Arr.push(i.sent)
+            //     }
+
+            // console.log("LIGHT_IDS",light_id_Arr)
+            // console.log("INT",interested_in)
+
+            // let query_green ={user:user_id,light:"Green"}
+            // let getGreenLight:any = await DAO.getData(Models.Light,query_green,{__v:0},{lean:true})
+
+            // let greenLightArr:any =[]
+            // for(let i of getGreenLight){
+            //     greenLightArr.push(i.sent)
+            // }
+
+            let query_All ={user:user_id}
+            let getAll:any = await DAO.getData(Models.Light,query_All,{__v:0},{lean:true})
+
+            let allArr:any=[]
+            for(let i of getAll){
+                allArr.push(i.sent)
                 }
-
-            console.log("LIGHT_IDS",light_id_Arr)
-            console.log("INT",interested_in)
-
-            let query_green ={user:user_id,light:"Green"}
-            let getGreenLight:any = await DAO.getData(Models.Light,query_green,{__v:0},{lean:true})
-
-            let greenLightArr:any =[]
-            for(let i of getGreenLight){
-                greenLightArr.push(i.sent)
-            }
-
-
 
             let query = {
                 
@@ -557,8 +563,9 @@ query
 
                 $or:[
                     { _id:{$ne:user_id}},
-                    { _id:{$in:light_id_Arr}},
-                    { _id:{$nin:greenLightArr}},
+                    // { _id:{$in:light_id_Arr}},
+                    // { _id:{$nin:greenLightArr}},
+                    { _id:{$nin:getAll}},
                      { dob:{$gte:greaterAge}},
                      { dob:{$lte:checkAge}},
                      { dob:{$lte:lesserAge}}, 
@@ -688,6 +695,7 @@ query
                         let update ={light:light}
                         let options ={new:true}
                         let update_data = await DAO.findAndUpdate(Models.Light,query,update,options)
+                        console.log("Update data ",update_data)
                         return res.json({'message' : 'Light Sent Successfully'})
                     
             }else{
@@ -697,6 +705,8 @@ query
                         light:light
                     }
                     let save_data = await DAO.saveData(Models.Light,data)
+                    console.log("Update save_data ",save_data)
+
                     return res.json({'message' : 'Light Sent Successfully'})
 
             }
@@ -712,6 +722,7 @@ query
     static async yellowLight(req:any,res:express.Response){
         try{
             let {_id:user_id} = req.user_data
+            console.log("user_ifd",user_id)
             let query ={user:user_id,light:"Yellow"}
             let projection ={__v:0}
             let options ={lean:true}
@@ -719,6 +730,7 @@ query
                 {path:'sent' , select:""}
             ]
             let response = await DAO.populateData(Models.Light,query,projection,options,polulate_data)
+            console.log("sdfds",response)
             res.send(response)
         }catch(err){
             handleCatch(res,err)
@@ -756,7 +768,7 @@ query
             }
 
             let query_resp = {
-                user:user_id,sent:{$nin:other_ids_arr},light:"Green"
+                user:user_id,sent:{$in:other_ids_arr},light:"Green"
             }
             let populate_data =[
                 {path:"sent", select:""}
