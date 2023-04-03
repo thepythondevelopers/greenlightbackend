@@ -31,7 +31,7 @@ router.post("/search-matching-algo",authenticator,userController.searchMatchingA
 
 //Light APIS
 router.post("/save-light",authenticator,userController.saveLight)
-router.get("    ",authenticator,userController.yellowLight)
+router.get("/yellow-light",authenticator,userController.yellowLight)
 router.get("/sent-green-light",authenticator,userController.greenLight);
 router.get("/mutual-green-light",authenticator,userController.mutualGreenLight);
 

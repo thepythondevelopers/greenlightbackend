@@ -590,14 +590,16 @@ class userController {
                 for (let i of getAll) {
                     allArr.push(i.sent);
                 }
+                console.log("sdfsf", allArr);
                 let query = {
                     interested_in: { $eq: gender },
                     gender: { $in: interested_in },
+                    _id: { $nin: allArr },
                     $or: [
-                        { _id: { $ne: user_id } },
+                        { _id: { $ne: user_id }, },
                         // { _id:{$in:light_id_Arr}},
                         // { _id:{$nin:greenLightArr}},
-                        { _id: { $nin: getAll } },
+                        // {},
                         { dob: { $gte: greaterAge } },
                         { dob: { $lte: checkAge } },
                         { dob: { $lte: lesserAge } },

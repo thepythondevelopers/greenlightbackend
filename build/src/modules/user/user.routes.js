@@ -31,7 +31,7 @@ router.post("/matching-algo", authenticator_1.default, user_controller_1.default
 router.post("/search-matching-algo", authenticator_1.default, user_controller_1.default.searchMatchingAlgorithm);
 //Light APIS
 router.post("/save-light", authenticator_1.default, user_controller_1.default.saveLight);
-router.get("    ", authenticator_1.default, user_controller_1.default.yellowLight);
+router.get("/yellow-light", authenticator_1.default, user_controller_1.default.yellowLight);
 router.get("/sent-green-light", authenticator_1.default, user_controller_1.default.greenLight);
 router.get("/mutual-green-light", authenticator_1.default, user_controller_1.default.mutualGreenLight);
 exports.default = router;
