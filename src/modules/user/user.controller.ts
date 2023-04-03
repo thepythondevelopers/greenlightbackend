@@ -758,24 +758,41 @@ query
                 sent_ids_arr.push(i.sent)
             }
 
+            console.log("sent arrr",sent_ids_arr)
+
             let query_one={
-                user:{$in:sent_ids_arr},light:"Green"
+                user:{$in:sent_ids_arr},light:"Green",sent:user_id  
             }
 
             let fetchDataOne:any = await DAO.getData(Models.Light,query_one,projection,options)
 
             let other_ids_arr:any=[]
+            console.log("giug",other_ids_arr)
+
             for(let i of fetchDataOne){
                 other_ids_arr.push(i.user)
             }
 
-            let query_resp = {
-                user:user_id,sent:{$in:other_ids_arr},light:"Green"
-            }
-            let populate_data =[
-                {path:"sent", select:""}
-            ]
-            let response = await DAO.populateData(Models.Light,query_resp,projection,options,populate_data)
+            let response:any
+
+            // if(other_ids_arr.length){
+                let query_resp = {
+                    user:user_id,sent:{$nin:other_ids_arr},light:"Green"
+                }
+                let populate_data =[
+                    {path:"sent", select:""}
+                ]
+                 response = await DAO.populateData(Models.Light,query_resp,projection,options,populate_data)
+            // }else{
+            //     let query_resp = {
+            //         user:user_id,sent:{$nin:sent_ids_arr},light:"Green"
+            //     }
+            //     let populate_data =[
+            //         {path:"sent", select:""}
+            //     ]
+            //      response = await DAO.populateData(Models.Light,query_resp,projection,options,populate_data)
+            // }
+           
             res.send(response)
         }catch(err){
             handleCatch(res,err)
