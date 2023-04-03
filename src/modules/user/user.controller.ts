@@ -540,6 +540,15 @@ query
             console.log("LIGHT_IDS",light_id_Arr)
             console.log("INT",interested_in)
 
+            let query_green ={user:user_id,light:"Green"}
+            let getGreenLight:any = await DAO.getData(Models.Light,query_green,{__v:0},{lean:true})
+
+            let greenLightArr:any =[]
+            for(let i of getGreenLight){
+                greenLightArr.push(i.sent)
+            }
+
+
 
             let query = {
                 
@@ -549,6 +558,7 @@ query
                 $or:[
                     { _id:{$ne:user_id}},
                     { _id:{$in:light_id_Arr}},
+                    { _id:{$nin:greenLightArr}},
                      { dob:{$gte:greaterAge}},
                      { dob:{$lte:checkAge}},
                      { dob:{$lte:lesserAge}}, 
@@ -673,48 +683,25 @@ query
             let fetch_data:any = await DAO.getData(Models.Light,query,projection,options)
 
             if(fetch_data.length){
-                // return res.json({'message' : 'Already Light Send.'})
-                let {_id} = fetch_data[0]
-                let lights =fetch_data[0].light
-                if(lights=="Green"){
-                    return res.json({'message' : 'Already Light Send.'})
-                }else{
-                    if(light!==undefined||light!==null){
-                        let query ={_id:_id}
-                    let update ={light:light}
-                    let options = {new:true}
-                    let response = await DAO.findAndUpdate(Models.Light,query,update,options)
-    
-                    return res.json({'message' : 'Light Update Successfully.'})
-    
-                    }else{
-                        return res.json({'message' : 'Already Light Send.'})
-                    }
                     
-                }
-               
+                        let query ={user:user_id,sent:sent}
+                        let update ={light:light}
+                        let options ={new:true}
+                        let update_data = await DAO.findAndUpdate(Models.Light,query,update,options)
+                        return res.json({'message' : 'Light Sent Successfully'})
+                    
             }else{
-                let data ={
-                    user:user_id,
-                    sent:sent,
-                    light:light
-                }
-                let saveData = await DAO.saveData(Models.Light,data)
-
-                if(light=="Green"){
-                    let query ={user:sent,sent:user_id,light:"Green"}
-                    let projection ={__v:0}
-                    let options ={lean:true}
-                    let fetchData:any= await DAO.getData(Models.Light,query,projection,options)
-
-                    if(fetchData.length){
-                        //Send Notification
-                        return res.json({'message' : 'Match  Successfully.'})
+                    let data ={
+                        user:user_id,
+                        sent:sent,
+                        light:light
                     }
-                }
-                return res.json({'message' : 'Light Send Successfully.'})
-            }
+                    let save_data = await DAO.saveData(Models.Light,data)
+                    return res.json({'message' : 'Light Sent Successfully'})
 
+            }
+                // return res.json({'message' : 'Already Light Send.'})
+                
         }catch(err){
             return res.status(400).json({
                 message : err
