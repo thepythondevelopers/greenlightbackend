@@ -563,27 +563,41 @@ class userController {
                 let lesserAge = moment_1.default().subtract(lesser, 'years').toISOString();
                 let checkAge = moment_1.default().subtract(18, 'years').toISOString();
                 console.log("AGE---CHECK", checkAge);
-                let light_id_Arr = [];
-                let query_red = { user: user_id, light: "Red" };
-                let getRedLight = yield DAO.getData(Models.Light, query_red, { __v: 0 }, { lean: true });
-                console.log("REDLIGHT", getRedLight);
-                for (let i of getRedLight) {
-                    light_id_Arr.push(i.sent);
+                // let light_id_Arr:any =[]
+                // let query_red ={user:user_id,light:"Red"}
+                // let getRedLight:any = await DAO.getData(Models.Light,query_red,{__v:0},{lean:true})
+                // console.log("REDLIGHT",getRedLight)
+                // for(let i of getRedLight){
+                //     light_id_Arr.push(i.sent)
+                // }
+                // let query_yellow ={user:user_id,light:"Yellow"}
+                // let getYellowLight:any = await DAO.getData(Models.Light,query_yellow,{__v:0},{lean:true})
+                // console.log("YellowLihgt",getYellowLight)
+                // for(let i of getYellowLight){
+                //     light_id_Arr.push(i.sent)
+                //     }
+                // console.log("LIGHT_IDS",light_id_Arr)
+                // console.log("INT",interested_in)
+                // let query_green ={user:user_id,light:"Green"}
+                // let getGreenLight:any = await DAO.getData(Models.Light,query_green,{__v:0},{lean:true})
+                // let greenLightArr:any =[]
+                // for(let i of getGreenLight){
+                //     greenLightArr.push(i.sent)
+                // }
+                let query_All = { user: user_id };
+                let getAll = yield DAO.getData(Models.Light, query_All, { __v: 0 }, { lean: true });
+                let allArr = [];
+                for (let i of getAll) {
+                    allArr.push(i.sent);
                 }
-                let query_yellow = { user: user_id, light: "Yellow" };
-                let getYellowLight = yield DAO.getData(Models.Light, query_yellow, { __v: 0 }, { lean: true });
-                console.log("YellowLihgt", getYellowLight);
-                for (let i of getYellowLight) {
-                    light_id_Arr.push(i.sent);
-                }
-                console.log("LIGHT_IDS", light_id_Arr);
-                console.log("INT", interested_in);
                 let query = {
                     interested_in: { $eq: gender },
                     gender: { $in: interested_in },
                     $or: [
                         { _id: { $ne: user_id } },
-                        { _id: { $in: light_id_Arr } },
+                        // { _id:{$in:light_id_Arr}},
+                        // { _id:{$nin:greenLightArr}},
+                        { _id: { $nin: getAll } },
                         { dob: { $gte: greaterAge } },
                         { dob: { $lte: checkAge } },
                         { dob: { $lte: lesserAge } },
@@ -680,24 +694,12 @@ class userController {
                 let options = { lean: true };
                 let fetch_data = yield DAO.getData(Models.Light, query, projection, options);
                 if (fetch_data.length) {
-                    // return res.json({'message' : 'Already Light Send.'})
-                    let { _id } = fetch_data[0];
-                    let lights = fetch_data[0].light;
-                    if (lights == "Green") {
-                        return res.json({ 'message': 'Already Light Send.' });
-                    }
-                    else {
-                        if (light !== undefined || light !== null) {
-                            let query = { _id: _id };
-                            let update = { light: light };
-                            let options = { new: true };
-                            let response = yield DAO.findAndUpdate(Models.Light, query, update, options);
-                            return res.json({ 'message': 'Light Update Successfully.' });
-                        }
-                        else {
-                            return res.json({ 'message': 'Already Light Send.' });
-                        }
-                    }
+                    let query = { user: user_id, sent: sent };
+                    let update = { light: light };
+                    let options = { new: true };
+                    let update_data = yield DAO.findAndUpdate(Models.Light, query, update, options);
+                    console.log("Update data ", update_data);
+                    return res.json({ 'message': 'Light Sent Successfully' });
                 }
                 else {
                     let data = {
@@ -705,19 +707,11 @@ class userController {
                         sent: sent,
                         light: light
                     };
-                    let saveData = yield DAO.saveData(Models.Light, data);
-                    if (light == "Green") {
-                        let query = { user: sent, sent: user_id, light: "Green" };
-                        let projection = { __v: 0 };
-                        let options = { lean: true };
-                        let fetchData = yield DAO.getData(Models.Light, query, projection, options);
-                        if (fetchData.length) {
-                            //Send Notification
-                            return res.json({ 'message': 'Match  Successfully.' });
-                        }
-                    }
-                    return res.json({ 'message': 'Light Send Successfully.' });
+                    let save_data = yield DAO.saveData(Models.Light, data);
+                    console.log("Update save_data ", save_data);
+                    return res.json({ 'message': 'Light Sent Successfully' });
                 }
+                // return res.json({'message' : 'Already Light Send.'})
             }
             catch (err) {
                 return res.status(400).json({
@@ -730,6 +724,7 @@ class userController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 let { _id: user_id } = req.user_data;
+                console.log("user_ifd", user_id);
                 let query = { user: user_id, light: "Yellow" };
                 let projection = { __v: 0 };
                 let options = { lean: true };
@@ -737,6 +732,7 @@ class userController {
                     { path: 'sent', select: "" }
                 ];
                 let response = yield DAO.populateData(Models.Light, query, projection, options, polulate_data);
+                console.log("sdfds", response);
                 res.send(response);
             }
             catch (err) {
@@ -770,7 +766,7 @@ class userController {
                     other_ids_arr.push(i.user);
                 }
                 let query_resp = {
-                    user: user_id, sent: { $nin: other_ids_arr }, light: "Green"
+                    user: user_id, sent: { $in: other_ids_arr }, light: "Green"
                 };
                 let populate_data = [
                     { path: "sent", select: "" }
