@@ -41,6 +41,8 @@ const UserSchema = ts_mongoose_1.createSchema({
     education_degree: ts_mongoose_1.Type.string({ default: null }),
     about_me: ts_mongoose_1.Type.string({ default: null }),
     location: ts_mongoose_1.Type.string({ default: null }),
+    marital_status: ts_mongoose_1.Type.string({ default: null }),
+    marital_status_other: ts_mongoose_1.Type.string({ default: null }),
     latLng: {
         type: ts_mongoose_1.Type.string({ default: "Point" }),
         coordinates: ts_mongoose_1.Type.array().of(ts_mongoose_1.Type.number({ default: [] })),

@@ -291,7 +291,7 @@ query
         try {
             let { _id: user_id } = req.user_data
 
-            let { alcohol, smoking,politics_other,looking_other,ethinicity_other, marijuana, drugs, have_kids, want_kids, astrology_sign, ethinicity, looking_for, religion, politics } = req.body
+            let { alcohol, smoking,marital_status_other,marital_status,politics_other,looking_other,ethinicity_other, marijuana, drugs, have_kids, want_kids, astrology_sign, ethinicity, looking_for, religion, politics } = req.body
 
             let query = { _id: user_id }
 
@@ -311,6 +311,9 @@ query
             if(politics){set_data.politics=politics}
             if(politics_other){set_data.politics_other=politics_other}
             if(looking_other){set_data.looking_other=looking_other}
+            if(marital_status){set_data.marital_status=marital_status}
+            if(marital_status_other){set_data.marital_status_other=marital_status_other}
+
 
             let options = { new: true }
 

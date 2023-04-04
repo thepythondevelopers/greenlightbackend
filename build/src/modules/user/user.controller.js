@@ -326,7 +326,7 @@ class userController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 let { _id: user_id } = req.user_data;
-                let { alcohol, smoking, politics_other, looking_other, ethinicity_other, marijuana, drugs, have_kids, want_kids, astrology_sign, ethinicity, looking_for, religion, politics } = req.body;
+                let { alcohol, smoking, marital_status_other, marital_status, politics_other, looking_other, ethinicity_other, marijuana, drugs, have_kids, want_kids, astrology_sign, ethinicity, looking_for, religion, politics } = req.body;
                 let query = { _id: user_id };
                 let set_data = {};
                 if (alcohol) {
@@ -370,6 +370,12 @@ class userController {
                 }
                 if (looking_other) {
                     set_data.looking_other = looking_other;
+                }
+                if (marital_status) {
+                    set_data.marital_status = marital_status;
+                }
+                if (marital_status_other) {
+                    set_data.marital_status_other = marital_status_other;
                 }
                 let options = { new: true };
                 let response = yield DAO.findAndUpdate(Models.Users, query, set_data, options);

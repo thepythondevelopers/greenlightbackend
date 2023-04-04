@@ -44,6 +44,9 @@ const UserSchema:any = createSchema({
    education_degree:Type.string({default:null}),
    about_me:Type.string({default:null}),
    location:Type.string({default:null}),
+   marital_status:Type.string({default:null}),
+   marital_status_other:Type.string({default:null}),
+
    latLng:{
     type:Type.string({default:"Point"}),
     coordinates: Type.array().of(Type.number({ default: [] })),
