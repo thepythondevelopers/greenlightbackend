@@ -621,40 +621,89 @@ query
             let checkAge = moment().subtract(18,'years').toISOString();
             console.log("AGE---CHECK",checkAge)
 
-            let light_id_Arr:any =[]
-            let query_red ={user:user_id,light:"Red"}
-            let getRedLight:any = await DAO.getData(Models.Light,query_red,{__v:0},{lean:true})
-            console.log("REDLIGHT",getRedLight)
+            // let light_id_Arr:any =[]
+            // let query_red ={user:user_id,light:"Red"}
+            // let getRedLight:any = await DAO.getData(Models.Light,query_red,{__v:0},{lean:true})
+            // console.log("REDLIGHT",getRedLight)
              
-            for(let i of getRedLight){
-                light_id_Arr.push(i.sent)
-            }
+            // for(let i of getRedLight){
+            //     light_id_Arr.push(i.sent)
+            // }
 
-            let query_yellow ={user:user_id,light:"Yellow"}
-            let getYellowLight:any = await DAO.getData(Models.Light,query_yellow,{__v:0},{lean:true})
-            console.log("YellowLihgt",getYellowLight)
+            // let query_yellow ={user:user_id,light:"Yellow"}
+            // let getYellowLight:any = await DAO.getData(Models.Light,query_yellow,{__v:0},{lean:true})
+            // console.log("YellowLihgt",getYellowLight)
 
-            for(let i of getYellowLight){
-                light_id_Arr.push(i.sent)
-            }
+            // for(let i of getYellowLight){
+            //     light_id_Arr.push(i.sent)
+            // }
 
-            console.log("LIGHT_IDS",light_id_Arr)
-            console.log("INT",interested_in)
+            // console.log("LIGHT_IDS",light_id_Arr)
+            // console.log("INT",interested_in)
 
+
+            // let query = {
+                
+            //     interested_in: { $eq: gender },
+            //     gender:{$in:interested_in},
+
+            //     $and:[
+            //         { _id:{$ne:user_id}},
+            //         { _id:{$in:light_id_Arr}},
+            //          { dob:{$gte:greaterAge}},
+            //          { dob:{$lte:checkAge}},
+            //          { dob:{$lte:lesserAge}}, 
+            //     ],
+                
+            //     latLng:
+            //     {
+            //         $near:
+            //         {
+            //             $geometry: {
+            //                 type: "Point",
+            //                 coordinates: [ longitude, latitude ]
+            //             },
+            //             // $maxDistance: 25 * 1000
+            //         }
+            //     },
+            //     $or:[
+            //         {'eyes': eyes},
+            //        {'hair_color': hair_color},
+            //        {'religion': religion},
+            //       ]
+                
+            //     // country:country
+                
+            // }
+
+            let query_All ={user:user_id}
+            let getAll:any = await DAO.getData(Models.Light,query_All,{__v:0},{lean:true})
+
+            let allArr:any=[]
+            for(let i of getAll){
+                allArr.push(i.sent)
+                }
 
             let query = {
                 
                 interested_in: { $eq: gender },
                 gender:{$in:interested_in},
-
-                $and:[
-                    { _id:{$ne:user_id}},
-                    { _id:{$in:light_id_Arr}},
-                     { dob:{$gte:greaterAge}},
-                     { dob:{$lte:checkAge}},
-                     { dob:{$lte:lesserAge}}, 
+                _id:{$nin:allArr},
+                marital_status:marital_status,
+               
+                $or:[
+                    
+                                { _id:{$ne:user_id}},
+                                // { _id:{$in:light_id_Arr}},
+                                 { dob:{$gte:greaterAge}},
+                                 { dob:{$lte:checkAge}},
+                                 { dob:{$lte:lesserAge}}, 
+                                 {'eyes': eyes},
+                                {'hair_color': hair_color},
+                                {'religion': religion},
                 ],
-                
+
+
                 latLng:
                 {
                     $near:
@@ -666,15 +715,11 @@ query
                         // $maxDistance: 25 * 1000
                     }
                 },
-                $or:[
-                    {'eyes': eyes},
-                   {'hair_color': hair_color},
-                   {'religion': religion},
-                  ]
                 
-                // country:country
+                country:country
                 
             }
+
             let response: any = await DAO.getData(Models.Users, query, { __v: 0 }, { lean: true })
             console.log("LENGTH", response.length)
             handleSuccess(res, response)
